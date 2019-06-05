@@ -1,0 +1,68 @@
+import React, { Component } from 'react';
+import { Header, Menu, Dropdown } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
+
+
+
+class Top extends Component {
+
+
+  render(){
+
+    return (
+      <div>
+       <br />
+       <Header  inverted color='grey' textAlign='center' as='h1'>Project Tracker</Header>
+       <br />
+       <Menu >
+        <Link to="/home" >
+          <Menu.Item name='home'>
+              Home
+          </Menu.Item>
+        </Link>
+
+        <Link to="/gallery">
+          <Menu.Item name='gallery' >
+              Gallery
+          </Menu.Item>
+        </Link>
+
+
+          <Menu.Item name='current projects'>
+            <Dropdown item text='Current Projects'>
+              <Dropdown.Menu>
+              {this.props.projects.map(project => (
+                <Link to="/show" key={project.id} onClick={()=>this.props.dropDown(project.id)}>
+                  <Dropdown.Item>{project.title}</Dropdown.Item>
+                </Link>
+              ))}
+              </Dropdown.Menu>
+            </Dropdown>
+          </Menu.Item>
+
+
+        <Menu.Menu position='right'>
+
+          <Link to="/profile">
+            <Menu.Item name='profile'>
+                Profile
+            </Menu.Item>
+          </Link>
+
+          <Link to="/login">
+            <Menu.Item
+              float='right'
+              name='login'>
+
+              Login
+            </Menu.Item>
+          </Link>
+
+        </Menu.Menu>
+        </Menu>
+      </div>
+    )
+  }
+}
+
+export default Top
