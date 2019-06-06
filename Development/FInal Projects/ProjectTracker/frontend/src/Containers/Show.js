@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 // import { Route } from 'react-router-dom'
 import { Link } from 'react-router-dom'
-import { Header, Grid, Button, Divider, Checkbox } from 'semantic-ui-react'
+import { Header, Grid, Button, Divider, Checkbox, Container } from 'semantic-ui-react'
 
 import Materials from './Materials'
-import FinishedPictures from '../Components/FinishedPictures'
+import FinishedPictures from './FinishedPictures'
 
 
 class Show extends Component {
@@ -43,9 +43,12 @@ class Show extends Component {
               <Grid>
                 <Grid.Column floated='left' width={5}>
                   <Header inverted color='grey' textAlign='center' as='h3'>Notes:</Header><br />
+                  <Container>{project.details}</Container>
                 </Grid.Column>
                 <Grid.Column  width={6}>
                   <Header inverted color='grey' textAlign='center' as='h3'>To Do List:</Header><br />
+                  <Checkbox color="white" label='Make my profile visible' />
+                  <Checkbox color="white" label='Make my profile visible' />
                   <Checkbox color="white" label='Make my profile visible' />
                 </Grid.Column>
                 <Grid.Column floated="right" width={5}>
@@ -54,10 +57,10 @@ class Show extends Component {
               </Grid>
               <Grid>
                 <Grid.Column  width={7}>
-                  <FinishedPictures />
+                  <FinishedPictures projects={this.props.projects}/>
                 </Grid.Column>
                 <Grid.Column floated="right" width={7}>
-                  <FinishedPictures />
+                  <FinishedPictures projects={this.props.projects}/>
                 </Grid.Column>
               </Grid>
             </div>

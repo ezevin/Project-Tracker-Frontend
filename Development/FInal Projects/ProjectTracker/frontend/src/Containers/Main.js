@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Grid } from 'semantic-ui-react'
 
 import Projects from './Projects'
-import FinishedPictures from '../Components/FinishedPictures'
+import FinishedPictures from './FinishedPictures'
 import Materials from './Materials'
 
 class Main extends Component {
@@ -34,7 +34,7 @@ class Main extends Component {
             />
           </Grid.Column>
           <Grid.Column  width={6}>
-            <FinishedPictures />
+            <FinishedPictures projects={this.props.projects}/>
           </Grid.Column>
           <Grid.Column floated="right" width={5}>
             <Materials materials={filteredMaterials} handleSearch={this.handleSearch}/>

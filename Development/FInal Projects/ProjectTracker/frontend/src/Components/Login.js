@@ -23,8 +23,8 @@ class Login extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault()
-    console.log(this.state.fields);
-    fetch('http://localhost:3001/api/v1/auth', {
+    // console.log(this.state.fields);
+    fetch('http://localhost:3001/api/v1/auth',{
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
@@ -38,15 +38,16 @@ class Login extends React.Component {
         this.setState({error: true})
       } else {
         this.props.handleUserLogin(data)
-        this.props.history.push("/bookshelf")
-        // console.log("data from api", data);
+        this.props.history.push("/home")
+        // console.log("data from api", data)
       }
     })
+    // this.setState(initialState)
   };
 
-  onClick = () => {
-    this.setState({login: false})
-  }
+  // onClick = () => {
+  //   this.setState({login: false})
+  // }
 
   render() {
     console.log('Login props', this.props);
@@ -60,34 +61,25 @@ class Login extends React.Component {
               Try Again
             </div>
           }
-          <center>
-            <Form inverted size='large' onSubmit={this.handleSubmit}>
-               <Form.Group widths='equal'>
-                <Form.Input
-                  fluid icon='user'
-                  iconPosition='left'
-                  name="username"
-                  value={fields.username}
-                  placeholder='username'
-                  label='Username:'
-                  onChange={this.handleChange}/>
-                <Form.Input
-                  fluid icon='lock'
-                  name="password"
-                  type="password"
-                  iconPosition='left'
-                  label='Password:'
-                  placeholder='password'
-                  value={fields.password}
-                  onChange={this.handleChange}/>
-               </Form.Group>
-               <Button.Group>
-               <Button color='black' >Login</Button>
-               <Button.Or />
-               <Button color='blue' onClick={this.props.toggleClick}> Create An Account</Button>
-               </Button.Group>
-              </Form>
-         </center>
+          <form onSubmit={this.handleSubmit}>
+            <div className="ui field">
+              <label>Username</label>
+              <input
+                name="username"
+                placeholder="username"
+                value={fields.username}
+                onChange={this.handleChange}/>
+            </div>
+            <div className="ui field">
+              <label>Password</label>
+              <input
+                name="password"
+                placeholder="password"
+                value={fields.password}
+                onChange={this.handleChange}/>
+            </div>
+            <Button type="submit">Submit</Button>
+          </form>
         </div>
       </div>
     );

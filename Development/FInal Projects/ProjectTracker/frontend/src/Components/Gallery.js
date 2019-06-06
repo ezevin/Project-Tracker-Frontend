@@ -1,62 +1,26 @@
 import React, { Component } from 'react'
-import { Header, Grid, Image, Container } from 'semantic-ui-react'
+import { Image, Container, Modal, Header } from 'semantic-ui-react'
 
 
 class Gallery extends Component {
   render(){
-    return(
-      <>
-        <Header inverted color='grey' textAlign="center" as='h2'>Photo Gallery</Header>
-        <Container>
-          <Grid relaxed columns={5}>
-            <Grid.Column>
-              <Image src='https://react.semantic-ui.com/images/wireframe/image.png' size='medium'/>
-            </Grid.Column>
-            <Grid.Column>
-              <Image src='https://react.semantic-ui.com/images/wireframe/image.png' size='medium'/>
-            </Grid.Column>
-            <Grid.Column>
-              <Image src='https://react.semantic-ui.com/images/wireframe/image.png' size='medium'/>
-            </Grid.Column>
-            <Grid.Column>
-              <Image src='https://react.semantic-ui.com/images/wireframe/image.png' size='medium'/>
-            </Grid.Column>
-            <Grid.Column>
-              <Image src='https://react.semantic-ui.com/images/wireframe/image.png' size='medium'/>
-            </Grid.Column>
-            <Grid.Column>
-              <Image src='https://react.semantic-ui.com/images/wireframe/image.png' size='medium'/>
-            </Grid.Column>
-            <Grid.Column>
-              <Image src='https://react.semantic-ui.com/images/wireframe/image.png' size='medium'/>
-            </Grid.Column>
-            <Grid.Column>
-              <Image src='https://react.semantic-ui.com/images/wireframe/image.png' size='medium'/>
-            </Grid.Column>
-            <Grid.Column>
-              <Image src='https://react.semantic-ui.com/images/wireframe/image.png' size='medium'/>
-            </Grid.Column>
-            <Grid.Column>
-              <Image src='https://react.semantic-ui.com/images/wireframe/image.png' size='medium'/>
-            </Grid.Column>
-            <Grid.Column>
-              <Image src='https://react.semantic-ui.com/images/wireframe/image.png' size='medium'/>
-            </Grid.Column>
-            <Grid.Column>
-              <Image src='https://react.semantic-ui.com/images/wireframe/image.png' size='medium'/>
-            </Grid.Column>
-            <Grid.Column>
-              <Image src='https://react.semantic-ui.com/images/wireframe/image.png' size='medium'/>
-            </Grid.Column>
-            <Grid.Column>
-              <Image src='https://react.semantic-ui.com/images/wireframe/image.png' size='medium'/>
-            </Grid.Column>
-            <Grid.Column>
-              <Image size='medium' src='https://react.semantic-ui.com/images/wireframe/image.png' />
-            </Grid.Column>
-          </Grid>
-        </Container>
-      </>
+    console.log(this.props);
+      return(
+        <>
+          <Container>
+            <Modal trigger={<Image src={this.props.photo} size='medium'/>}>
+              <Modal.Content image>
+                <Image wrapped size='medium' src={this.props.photo} />
+                <Modal.Description>
+                  <Header>{this.props.title}</Header>
+                  <Header as="h4">Project Notes: {this.props.details}</Header>
+                  <Header as="h4">Task List: {this.props.details}</Header>
+                  <Header as="h4">Materials: {this.props.details}</Header>
+                </Modal.Description>
+              </Modal.Content>
+            </Modal><br />
+          </Container>
+        </>
     )
   }
 }

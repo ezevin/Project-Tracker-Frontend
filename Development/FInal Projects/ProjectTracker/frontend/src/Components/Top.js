@@ -43,6 +43,14 @@ class Top extends Component {
 
         <Menu.Menu position='right'>
 
+          {
+            this.props.currentUser &&
+            <Menu.Item
+              float='right'
+              name='logout'>
+              {`Welcome ${this.props.currentUser.username}`}
+            </Menu.Item>
+          }
           <Link to="/profile">
             <Menu.Item name='profile'>
                 Profile
@@ -50,12 +58,21 @@ class Top extends Component {
           </Link>
 
           <Link to="/login">
-            <Menu.Item
+            {
+              this.props.currentUser ?
+              <Menu.Item
+                float='right'
+                name='logout'
+                onClick={this.props.handleLogout}>
+                Logout
+              </Menu.Item>
+              :
+              <Menu.Item
               float='right'
               name='login'>
-
               Login
-            </Menu.Item>
+              </Menu.Item>
+            }
           </Link>
 
         </Menu.Menu>

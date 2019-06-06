@@ -18,7 +18,7 @@ class LoginPage extends Component {
 
   render(){
     return (
-      <Login />
+      <Login handleUserLogin={this.props.handleUserLogin} handleLogout={this.props.handleLogout}/>
     )
   }
 }
