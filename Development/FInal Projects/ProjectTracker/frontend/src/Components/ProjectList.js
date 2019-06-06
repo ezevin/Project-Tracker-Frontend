@@ -7,7 +7,7 @@ import { Dropdown, Container } from 'semantic-ui-react'
       return (
         <>
         <Container align="center">
-        <Dropdown text={this.props.project}>
+        <Dropdown  text={this.props.project}>
          <Dropdown.Menu>
            <Dropdown.Item text='To Do List' />
          </Dropdown.Menu>

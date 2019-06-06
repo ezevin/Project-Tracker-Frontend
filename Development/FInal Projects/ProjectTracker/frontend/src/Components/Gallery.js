@@ -4,7 +4,7 @@ import { Image, Container, Modal, Header } from 'semantic-ui-react'
 
 class Gallery extends Component {
   render(){
-    console.log(this.props);
+    // console.log(this.props);
       return(
         <>
           <Container>

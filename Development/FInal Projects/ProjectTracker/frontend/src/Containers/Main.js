@@ -31,6 +31,8 @@ class Main extends Component {
           <Grid.Column floated='left' width={5}>
             <Projects
               projects={this.props.projects}
+              addProject={this.props.addProject}
+              id={this.props.id}
             />
           </Grid.Column>
           <Grid.Column  width={6}>
