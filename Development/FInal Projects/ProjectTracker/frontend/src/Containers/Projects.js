@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Header, Button, Popup, Form } from 'semantic-ui-react'
+import { Header, Button, Popup, Form, Search, Grid } from 'semantic-ui-react'
 
 import ProjectList from '../Components/ProjectList'
 
@@ -8,7 +8,8 @@ class Projects extends Component {
   state = {
     title: "",
     user_id: "",
-    isOpen: false
+    isOpen: false,
+    value: ""
   }
 
   handleOpen = () => {
@@ -21,6 +22,10 @@ class Projects extends Component {
 
   handleChange = (e) => {
     this.setState({title: e.target.value})
+  }
+
+  handleRadio = (e, {value}) => {
+    this.setState({value})
   }
 
   handleSubmit= (e) => {
@@ -42,6 +47,8 @@ class Projects extends Component {
   }
 
   render(){
+    const { value } = this.state.value
+    // console.log(this.props.dates);
     const form = <Form onSubmit={this.handleSubmit}>
                   <Form.Field>
                     <label>Project Name:</label>
@@ -53,6 +60,18 @@ class Projects extends Component {
     return(
       <div>
         <Header inverted color='grey' textAlign="center" as='h2'>Current Projects</Header>
+          <center><Search width={15} onSearchChange={this.props.handleSearch} showNoResults={false} /></center><br />
+          <center><span>Search By:</span></center>
+            <Grid padded>
+            <Grid.Column width={7}>
+                <span className="color">Project Name:          </span>
+                <input  type="radio" value="Name" checked={value === 'Name'} onChange={this.props.titles}/>
+            </Grid.Column>
+            <Grid.Column width={8}>
+                <span className="color">Due Date:          </span>
+                <input type="radio" value="DueDate" checked={value === 'DueDate'} onChange={this.props.dates}/>
+            </Grid.Column>
+            </Grid>
         {this.props.projects.map(project =>(
           <ProjectList key={project.id} project={project.title} projects={this.props.projects}/>
           ))

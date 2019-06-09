@@ -1,17 +1,12 @@
 import React, { Component } from 'react'
-import { Container, List, Header, Grid, Label, Popup, Card, Button, Image, Modal, Form  } from 'semantic-ui-react'
+import { Container, List, Grid } from 'semantic-ui-react'
 
-import Item from '../Forms/Item'
-import ItemImage from '../Forms/ItemImage'
-import Price from '../Forms/Price'
-import Quantity from '../Forms/Quantity'
-import Details from '../Forms/Details'
-import Place from '../Forms/Place'
 import ProjectMaterialInfo from './ProjectMaterialInfo'
 
 class ProjectMaterialList extends Component {
 
   render(){
+    // debugger
 
     return (
       <Container>

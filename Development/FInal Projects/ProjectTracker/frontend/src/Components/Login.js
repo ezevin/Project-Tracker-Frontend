@@ -1,6 +1,8 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom'
-import { Button } from 'semantic-ui-react'
+import { Link, withRouter } from 'react-router-dom'
+import { Button, Form } from 'semantic-ui-react'
+
+// import Signup from './Signup'
 
 const initialState = {
   error: false,
@@ -45,9 +47,9 @@ class Login extends React.Component {
     // this.setState(initialState)
   };
 
-  // onClick = () => {
-  //   this.setState({login: false})
-  // }
+  onClick = () => {
+    this.setState({login: false})
+  }
 
   render() {
     // console.log('Login props', this.props);
@@ -61,26 +63,35 @@ class Login extends React.Component {
               Try Again
             </div>
           }
-          <form onSubmit={this.handleSubmit}>
-            <div className="ui field">
-              <label>Username</label>
-              <input
-                name="username"
-                placeholder="username"
-                value={fields.username}
-                onChange={this.handleChange}/>
-            </div>
-            <div className="ui field">
-              <label>Password</label>
-              <input
-                name="password"
-                type="password"
-                placeholder="password"
-                value={fields.password}
-                onChange={this.handleChange}/>
-            </div>
-            <Button type="submit">Submit</Button>
-          </form>
+          <center>
+            <Form inverted size='large' onSubmit={this.handleSubmit}>
+                <Form.Input
+                  width={5}
+                  fluid icon='user'
+                  iconPosition='left'
+                  name="username"
+                  value={fields.username}
+                  placeholder='username'
+                  label='Username:'
+                  onChange={this.handleChange} />
+                <Form.Input
+                  width={5}
+                  fluid icon='lock'
+                  name="password"
+                  type="password"
+                  iconPosition='left'
+                  label='Password:'
+                  placeholder='password'
+                  value={fields.password}
+                  onChange={this.handleChange}/>
+              <Button.Group>
+                <Button color='white'>Login</Button>
+              <Button.Or />
+                <Link to='signup'>
+                <Button color='blue'>Create An Account</Button></Link>
+              </Button.Group>
+            </Form>
+          </center>
         </div>
       </div>
     );

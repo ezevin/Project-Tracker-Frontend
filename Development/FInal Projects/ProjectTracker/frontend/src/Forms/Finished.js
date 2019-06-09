@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom'
-import { Form, Button, Popup, Icon, TextArea, Container, Modal } from 'semantic-ui-react'
+import { Form, Button, Modal } from 'semantic-ui-react'
 
 class Finished extends Component {
 
@@ -24,8 +24,8 @@ class Finished extends Component {
   }
 
   handleClick = () => {
-    const { finished } = this.state
-    this.setState({finished: true})
+    // const { finished } = this.state
+    // this.setState({finished: true})
     console.log("state",this.state);
     fetch(`http://localhost:3001/api/v1/projects/${this.props.projectId}`, {
           method: "PATCH",

@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom'
 import { Header, Grid, Button, Divider, Checkbox, Container } from 'semantic-ui-react'
 
-import Materials from './Materials'
 import ProjectMaterials from './ProjectMaterials'
 import FinishedPictures from './FinishedPictures'
 import StartDate from '../Forms/StartDate'
@@ -12,38 +11,26 @@ import DueDate from '../Forms/DueDate'
 import Notes from '../Forms/Notes'
 import Finished from '../Forms/Finished'
 import Title from '../Forms/Title'
+import ResearchImages from './ResearchImages'
+
 
 class Show extends Component {
   state = {
-    search: '',
+    search: ''
   }
-
 
   handleSearch = (e, {value}) => {
     this.setState({search: value})
     // console.log(value)
   }
 
-  handleClick = () => {
-    const { finished } = this.state
-    this.setState({finished: true})
-    console.log("state",this.state);
-    fetch(`http://localhost:3001/api/v1/projects/${this.props.projectId}`, {
-          method: "PATCH",
-          headers: {
-            Accept: 'application/json',
-            'Content-type': 'application/json'
-          },
-          body: JSON.stringify({ finished: true })
-        })
-        .then(res=>res.json())
-        .then(data => {this.setState(data)})
-        // .then(this.props.history.push('home'))
-        .then(() =>this.props.fetchProjects())
-  }
 
   render(){
-    const { projectId, projects, materials, projectMaterials } = this.props
+
+    const prices = this.props.projectMaterials.map(material => material.price)
+    const total = prices.reduce((a,b) => a+b, 0)
+
+    const { projectId, projects, projectMaterials } = this.props
     const filteredMaterials = projectMaterials.filter(material =>{
       // console.log(material.label);
       return material.label.toLowerCase().includes(this.state.search.toLowerCase())
@@ -57,7 +44,7 @@ class Show extends Component {
                 <Title id={project.id} title={project.title} fetchProjects={this.props.fetchProjects}/>
               </Header>
 
-            <Grid>
+            <Grid padded>
               <Grid.Row>
                 <Grid.Column width={6} floated='left'>Date Started: {project.start_date}
                   <StartDate id={project.id} start_date={project.start_date} fetchProjects={this.props.fetchProjects}/>
@@ -75,13 +62,13 @@ class Show extends Component {
                 <Budget id={project.id} budget={project.budget} fetchProjects={this.props.fetchProjects}/>
               </Grid.Column>
 
-              <Grid.Column width={3} floated='right'>Remaining Budget: $</Grid.Column>
+              <Grid.Column width={3} floated='right'>Remaining Budget: ${project.budget - total}</Grid.Column>
             </Grid>
 
             <Divider inverted/>
             <br />
 
-              <Grid>
+              <Grid padded>
                 <Grid.Column floated='left' width={5}>
                   <Header inverted color='grey' textAlign='center' as='h3'>Notes:  <Notes id={projectId} details={project.details} fetchProjects={this.props.fetchProjects}/></Header><br />
                   <Container>{project.details}</Container>
@@ -96,7 +83,8 @@ class Show extends Component {
                 <Grid.Column floated="right" width={5}>
                   <ProjectMaterials
                     id={project.id}
-                    materials={this.props.projectMaterials}
+                    materials={filteredMaterials}
+                    handleSearch={this.handleSearch}
                     allMaterials={this.props.materials}
                     fetchProjectMaterials={this.props.fetchProjectMaterials}
                     addProjectMaterial={this.props.addProjectMaterial}
@@ -105,7 +93,7 @@ class Show extends Component {
               </Grid>
               <Grid>
                 <Grid.Column  width={7}>
-                  <FinishedPictures projects={this.props.finished}/>
+                  <ResearchImages fetchResearchImages={this.props.fetchResearchImages} researches={this.props.researches} projectId={projectId} deleteResearch={this.props.deleteResearch}/>
                 </Grid.Column>
                 <Grid.Column floated="right" width={7}>
                   <FinishedPictures projects={this.props.finished}/>

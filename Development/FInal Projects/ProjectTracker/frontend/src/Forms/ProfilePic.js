@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Form, Button, Popup, Icon, TextArea } from 'semantic-ui-react'
+import { Form, Button, Popup, Icon } from 'semantic-ui-react'
 
-class Notes extends Component {
+class ProfilePic extends Component {
 
   state = {
-    details: "",
+    profile_picture: "",
     isOpen: false
   }
 
@@ -17,34 +17,31 @@ class Notes extends Component {
   }
 
   handleChange = (e) => {
-    console.log(e.target.value);
-    this.setState({details: e.target.value})
+    this.setState({profile_picture: e.target.value})
   }
 
   handleSubmit = (e) => {
     e.preventDefault()
-
-    const { details } = this.state
-
-    fetch(`http://localhost:3001/api/v1/projects/${this.props.id}`, {
+    const { profile_picture } = this.state
+    fetch(`http://localhost:3001/api/v1/users/${this.props.id}`, {
           method: "PATCH",
           headers: {
             Accept: 'application/json',
             'Content-type': 'application/json'
           },
-          body: JSON.stringify({ details })
+          body: JSON.stringify({ profile_picture })
         })
         .then(res=>res.json())
         .then(data => {this.setState(data)})
-        .then(()=> this.props.fetchProjects())
+        .then(()=> this.props.fetchUserData())
         this.setState({isOpen: false})
   }
   render(){
     // console.log(this.props);
     const form = <Form onSubmit={this.handleSubmit}>
                   <Form.Field>
-                    <label>Add A Note:</label>
-                    <TextArea placeholder={this.props.details} onChange={this.handleChange} />
+                    <label>Update Profile Picture:</label>
+                    <input placeholder={this.props.profile_picture} onChange={this.handleChange}/>
                   </Form.Field>
                   <Button type='submit'>Submit</Button>
                 </Form>
@@ -64,4 +61,4 @@ class Notes extends Component {
   }
 }
 
-export default Notes
+export default ProfilePic

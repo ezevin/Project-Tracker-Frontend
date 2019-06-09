@@ -1,23 +1,26 @@
 import React, { Component } from 'react'
-import { Button, Image } from 'semantic-ui-react'
+import { Image, Card } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
+
+import AboutMe from '../Forms/AboutMe'
+import Name from '../Forms/Name'
+import Age from '../Forms/Age'
+import ProfilePic from '../Forms/ProfilePic'
 
 class Profile extends Component {
 
   render(){
-    return (
-      <div>
-        <center className="textMedium">About Me</center>
-        <Image src=""/>
-        <span className="color">Name:  </span><br /><br />
-        <span className="color">Age:  </span><br /><br />
-        <span className="color">About Me: "" </span><br /><br />
-        <Link to="/editProfile">
-          <Button className="color" color="black">Edit My Profile</Button>
-        </Link>
-
-      </div>
-    )
+    console.log(this.props.user.username);
+    const { username, name, age, about_me, profile_picture, id } = this.props.user
+      return (
+        <div>
+        <center className="textMedium">{username}'s Profile</center>
+        <ProfilePic id={id} fetchUserData={this.props.fetchUserData}/><Card><Image src={profile_picture}/></Card>
+        <span className="color"><Name id={id} fetchUserData={this.props.fetchUserData}/>Name: {name}</span><br /><br />
+        <span className="color"><Age id={id} fetchUserData={this.props.fetchUserData}/>Age: {age} </span><br /><br />
+        <span className="color"><AboutMe id={id} fetchUserData={this.props.fetchUserData}/>About Me: "{about_me}"</span><br /><br />
+        </div>
+      )
   }
 }
 

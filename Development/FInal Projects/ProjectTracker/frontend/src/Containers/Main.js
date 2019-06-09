@@ -3,16 +3,22 @@ import React, { Component } from 'react';
 import { Grid } from 'semantic-ui-react'
 
 import Projects from './Projects'
-import FinishedPictures from './FinishedPictures'
+import MainGallery from './MainGallery'
 import Materials from './Materials'
 
 class Main extends Component {
   state = {
-    search: ''
+    search: '',
+    psearch: ''
   }
 
   handleSearch = (e, {value}) => {
     this.setState({search: value})
+    console.log(value)
+  }
+
+  handlePSearch = (e, {value}) => {
+    this.setState({psearch: value})
     console.log(value)
   }
 
@@ -23,6 +29,11 @@ class Main extends Component {
       return material.label.toLowerCase().includes(this.state.search.toLowerCase())
     })
 
+    const filteredProjects = this.props.projects.filter(project =>{
+      return project.title.toLowerCase().includes(this.state.psearch.toLowerCase())
+    })
+
+
     return (
 
       <>
@@ -30,13 +41,16 @@ class Main extends Component {
         <Grid>
           <Grid.Column floated='left' width={5}>
             <Projects
-              projects={this.props.projects}
+              projects={filteredProjects}
               addProject={this.props.addProject}
+              handleSearch={this.handlePSearch}
+              titles={this.props.titles}
+              dates={this.props.dates}
               id={this.props.id}
             />
           </Grid.Column>
           <Grid.Column  width={6}>
-            <FinishedPictures projects={this.props.finished}/>
+            <MainGallery projects={this.props.finished}/>
           </Grid.Column>
           <Grid.Column floated="right" width={5}>
             <Materials materials={filteredMaterials}
