@@ -11,7 +11,8 @@ class FinishedPictures extends Component {
         <Grid relaxed columns={5}>
           <Grid.Column>
           {this.props.projects.map(project =>(
-             <Gallery key={project.id} photo={project.finished_image} title={project.title} details={project.details}/>
+
+             <Gallery key={project.id} photo={project.finished_image} title={project.title} details={project.details} finished_image={project.finished_image}/>
           ))}
           </Grid.Column>
         </Grid>

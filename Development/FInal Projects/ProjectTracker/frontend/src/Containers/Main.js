@@ -36,10 +36,16 @@ class Main extends Component {
             />
           </Grid.Column>
           <Grid.Column  width={6}>
-            <FinishedPictures projects={this.props.projects}/>
+            <FinishedPictures projects={this.props.finished}/>
           </Grid.Column>
           <Grid.Column floated="right" width={5}>
-            <Materials materials={filteredMaterials} handleSearch={this.handleSearch}/>
+            <Materials materials={filteredMaterials}
+             addMaterial={this.props.addMaterial}
+             id={this.props.id}
+             handleSearch={this.handleSearch}
+             deleteMaterial={this.props.deleteMaterial}
+             fetchMaterials={this.props.fetchMaterials}
+            />
           </Grid.Column>
         </Grid>
       </>

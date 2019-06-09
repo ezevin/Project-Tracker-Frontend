@@ -37,3 +37,7 @@
   font-size: xx-large;
   text-shadow: 3px 2px #0A0806;
 }
+
+.box {
+  border-color: black
+}

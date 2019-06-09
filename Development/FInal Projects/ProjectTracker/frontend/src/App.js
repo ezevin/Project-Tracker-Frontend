@@ -16,6 +16,9 @@ class App extends Component {
     pID: null,
     currentUser: null,
     id: '',
+    projectMaterials: [],
+    pm: [],
+    allProjects: []
 
   }
 
@@ -36,25 +39,31 @@ class App extends Component {
         let id = this.state.currentUser.id
         fetch(`http://localhost:3001/api/v1/users/${id}`)
         .then(res => res.json())
-        .then(data => this.setState({projects: data.projects}, console.log("USER PROJECTS", this.state.projects)))
+        .then(data => this.setState({projects: data.projects, materials: data.materials}, console.log("USER ", data.projects)))
         this.setState({id: id})
       })
     }
 
-    // fetch('http://localhost:3001/api/v1/projects')
-    // .then(res => res.json())
-    // .then(data => this.setState({projects: data}))
-
-    fetch('http://localhost:3001/api/v1/materials')
+    fetch(`http://localhost:3001/api/v1/projects`)
     .then(res => res.json())
-    .then(data => this.setState({materials: data}))
+    .then(data => this.setState({allProjects: data}))
+
+    fetch('http://localhost:3001/api/v1/project_materials')
+    .then(res => res.json())
+    .then(data => this.setState({pm: data}))
+
+  //   fetch('http://localhost:3001/api/v1/materials')
+  //   .then(res => res.json())
+  //   .then(data => this.setState({materials: data}))
   }
 
   /******************************************/
   /*               MENU BAR                */
   /******************************************/
   dropDown = (id) => {
-    this.setState({pId: id})
+    fetch(`http://localhost:3001/api/v1/projects/${id}`)
+    .then(res => res.json())
+    .then(data => this.setState({projectMaterials: data.materials, pId: id}))
   }
   /******************************************/
   /*                                        */
@@ -78,7 +87,7 @@ class App extends Component {
   /******************************************/
 
   /******************************************/
-  /*          ADD/UPDATE/DELETE PROJECTS           */
+  /*     ADD/UPDATE/DELETE PROJECTS         */
   /******************************************/
   addProject = (project) => {
     this.setState({projects: [...this.state.projects, project]})
@@ -98,25 +107,108 @@ class App extends Component {
       method:"delete"
     })
     .then(this.props.history.push('home'))
-    .then(() => this.fetchProjects())
+    .then(() =>this.fetchProjects())
   }
   /******************************************/
   /*                                        */
   /******************************************/
 
+  /******************************************/
+  /*     ADD/UPDATE/DELETE MATERIALS         */
+  /******************************************/
+  addMaterial = (material) => {
+    this.setState({materials: [...this.state.materials, material]})
+  }
+
+  addProjectMaterial = (projectmaterial) => {
+    this.setState({pm: [...this.state.pm, projectmaterial]})
+  }
+
+  fetchMaterials = () => {
+    let id = this.state.currentUser.id
+    fetch(`http://localhost:3001/api/v1/users/${id}`)
+    .then(res => res.json())
+    .then(data => this.setState({materials: data.materials}, console.log("USER Materials", this.state.materials)))
+  }
+  //
+  deleteMaterial = (dmaterial) => {
+    const deleted = this.state.materials.find(material => material.id === dmaterial)
+    console.log("item", deleted.id);
+    fetch(`http://localhost:3001/api/v1/materials/${deleted.id}`, {
+      method:"delete"
+    })
+    .then(() =>this.fetchMaterials())
+  }
+
+  fetchProjectMaterials = () => {
+    let id = this.state.pId
+
+    fetch(`http://localhost:3001/api/v1/projects/${id}`)
+    .then(res => res.json())
+    .then(data => this.setState({projectMaterials: data.materials}))
+  }
+
+  deleteProjectMaterials = (pm) => {
+     const deleted = this.state.projectMaterials.find(material => material.id === pm)
+     console.log("pm", deleted, "project", this.state.pId, "join", this.state.pm);
+
+     this.state.pm.find(item => {
+       // console.log("test 1", item.project_id,  this.state.pId);
+       // console.log("test 2", item.material_id,  deleted.id);
+       if (item.project_id === this.state.pId && item.material_id === deleted.id){
+         fetch(`http://localhost:3001/api/v1/project_materials/${item.id}`, {
+           method: "delete"
+         })
+         .then(() =>this.fetchProjectMaterials())
+       }
+     })
+
+  }
+
+  /******************************************/
+  /*                                        */
+  /******************************************/
   render (){
     // console.log("App is rendering ", this.state);
-    console.log(this.state.id);
+    const unfinished = this.state.projects.filter(project => {
+      if(project.finished === false){
+      return project
+      }
+    })
+    const finished = this.state.projects.filter(project => {
+      if(project.finished){
+      return project
+      }
+    })
+
+    const all = this.state.allProjects.filter(project => {
+      if(project.id === this.state.pId){
+      return project.materials}
+    })
+    console.log(this.state.projectMaterials);
     return (
       <>
-        <Top projects={this.state.projects} dropDown={this.dropDown} currentUser={this.state.currentUser} handleLogout={this.handleLogout}/><br />
-          <Route path='/Home' render={()=><Main projects={this.state.projects} materials={this.state.materials} addProject={this.addProject} id={this.state.id}/>}/>
+        <Top projects={unfinished} dropDown={this.dropDown} currentUser={this.state.currentUser} handleLogout={this.handleLogout}/><br />
+          <Route path='/Home' render={()=><Main projects={unfinished} finished={finished} materials={this.state.materials} addProject={this.addProject}
+          addMaterial={this.addMaterial}
+          deleteMaterial={this.deleteMaterial}
+          id={this.state.id}
+          fetchMaterials={this.fetchMaterials}/>}/>
           <Route path="/login" render={() => {
             return <LoginPage handleUserLogin={this.handleUserLogin } handleLogout={this.handleLogout}/>}}/> <br />
           <Route path="/gallery" render={() => {
-            return <FinishedPictures projects={this.state.projects} />}} />
+            return <FinishedPictures projects={finished} />}} />
           <Route path="/show" render={() => {
-              return <Show projects={this.state.projects} materials={this.state.materials} projectId={this.state.pId} fetchProjects={this.fetchProjects} deleteProject={this.deleteProject}/>}} />
+              return <Show projects={unfinished}
+               finished={finished}
+               materials={this.state.materials} projectId={this.state.pId} fetchProjects={this.fetchProjects} deleteProject={this.deleteProject}
+               deleteProjectMaterials={this.deleteProjectMaterials}
+               projectMaterials={this.state.projectMaterials}
+               fetchProjectMaterials={this.fetchProjectMaterials}
+               addProjectMaterial={this.addProjectMaterial}
+               allProjects={this.state.allProjects}
+               />}}
+               />
           <Route path="/profile" render={() => {
             return <Profile />}} />
       </>

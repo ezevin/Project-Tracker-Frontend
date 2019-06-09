@@ -7,9 +7,9 @@ import Price from '../Forms/Price'
 import Quantity from '../Forms/Quantity'
 import Details from '../Forms/Details'
 import Place from '../Forms/Place'
-import MaterialUpdate from '../Forms/MaterialUpdate'
+import ProjectMaterialInfo from './ProjectMaterialInfo'
 
-class MaterialsList extends Component {
+class ProjectMaterialList extends Component {
 
   render(){
 
@@ -33,7 +33,7 @@ class MaterialsList extends Component {
           </Grid.Column>
           <Grid.Column width={3}>
             <List >
-              <List.Item><MaterialUpdate
+              <List.Item><ProjectMaterialInfo
                 key={this.props.id}
                 materials={this.props.material}
                 label={this.props.label}
@@ -58,4 +58,4 @@ class MaterialsList extends Component {
   }
 }
 
-export default MaterialsList
+export default ProjectMaterialList
