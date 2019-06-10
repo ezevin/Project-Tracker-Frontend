@@ -33,7 +33,6 @@ class Main extends Component {
       return project.title.toLowerCase().includes(this.state.psearch.toLowerCase())
     })
 
-
     return (
 
       <>
@@ -47,10 +46,11 @@ class Main extends Component {
               titles={this.props.titles}
               dates={this.props.dates}
               id={this.props.id}
+              dropDown={this.props.dropDown}
             />
           </Grid.Column>
           <Grid.Column  width={6}>
-            <MainGallery projects={this.props.finished}/>
+            <MainGallery projects={this.props.finished} research={this.props.research}/>
           </Grid.Column>
           <Grid.Column floated="right" width={5}>
             <Materials materials={filteredMaterials}

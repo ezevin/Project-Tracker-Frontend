@@ -16,7 +16,7 @@ class Gallery extends Component {
   render(){
 
     const trigger = <Card color='teal' fluid>
-                      <Image src={this.props.photo}  size='medium'/>
+                      <Image src={this.props.finished_image}  size='medium'/>
                     </Card>
     const research = this.props.research.filter(research => {
       if(research.project_id === this.props.projectId){
@@ -24,7 +24,6 @@ class Gallery extends Component {
       }
       })
 
-    console.log(research);
     const researchCard =   <Modal open={this.state.isOpen} onOpen={this.handleOpen} onClose={this.handleClose}
                             trigger={
                               <Button primary icon>
@@ -38,7 +37,6 @@ class Gallery extends Component {
                                <Button align="right" icon='check' content='Back To Project Details' onClick={this.handleClose} />
                            </Modal>
 
-    console.log(this.props.research);
       return(
         <>
           <Modal trigger={trigger}>

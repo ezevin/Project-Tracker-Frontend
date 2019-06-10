@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Header, Grid, Search, Popup, Icon, Form, Button } from 'semantic-ui-react'
+import { Header, Grid, Popup, Icon, Form, Button } from 'semantic-ui-react'
 
 import ResearchGallery from '../Components/ResearchGallery'
 
@@ -63,14 +63,9 @@ class ResearchImages extends Component {
         </Header>
         <Grid columns={5} padded className="link cards ">
           {this.props.researches.map(research =>(
-             <ResearchGallery key={research.id} id={research.id} photo={research.image} deleteResearch={this.props.deleteResearch}/>
+             <ResearchGallery key={research.id} research={research} id={research.id} photo={research.image} deleteResearch={this.props.deleteResearch}/>
           ))}
         </Grid>
-
-
-
-
-
       </>
     )
   }

@@ -22,7 +22,7 @@ class MaterialsList extends Component {
           </Grid.Column>
           <Grid.Column width={3}>
             <List >
-              <List.Item><h4>{this.props.quantity}</h4></List.Item>
+              <List.Item><h4>quantity</h4></List.Item>
             </List>
           </Grid.Column>
           <Grid.Column width={3}>

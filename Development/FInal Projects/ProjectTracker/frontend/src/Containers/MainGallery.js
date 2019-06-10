@@ -13,7 +13,7 @@ class MainGallery extends Component {
         <Header inverted color='grey' textAlign="center" as='h2'>Photo Gallery</Header>
         <Grid columns={5} padded className="cards ">
           {this.props.projects.map(project =>(
-             <Gallery key={project.id} photo={project.finished_image} title={project.title} details={project.details} finished_image={project.finished_image}/>
+             <Gallery key={project.id} photo={project.finished_image} title={project.title} details={project.details} finished_image={project.finished_image} projectId={project.id} research={this.props.research}/>
           ))}
         </Grid>
       </>

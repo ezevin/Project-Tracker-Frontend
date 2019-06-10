@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 // import { Route } from 'react-router-dom'
 import { withRouter } from 'react-router-dom'
-import { Header, Grid, Button, Divider, Checkbox, Container } from 'semantic-ui-react'
+import { Header, Grid, Button, Divider, Container } from 'semantic-ui-react'
 
 import ProjectMaterials from './ProjectMaterials'
-import FinishedPictures from './FinishedPictures'
 import StartDate from '../Forms/StartDate'
 import Budget from '../Forms/Budget'
 import DueDate from '../Forms/DueDate'
@@ -12,6 +11,7 @@ import Notes from '../Forms/Notes'
 import Finished from '../Forms/Finished'
 import Title from '../Forms/Title'
 import ResearchImages from './ResearchImages'
+import ToDo from './ToDo'
 
 
 class Show extends Component {
@@ -75,10 +75,7 @@ class Show extends Component {
                 </Grid.Column>
 
                 <Grid.Column  width={6}>
-                  <Header inverted color='grey' textAlign='center' as='h3'>To Do List:</Header><br />
-                  <Checkbox color="white" label='Make my profile visible' />
-                  <Checkbox color="white" label='Make my profile visible' />
-                  <Checkbox color="white" label='Make my profile visible' />
+                  <ToDo fetchToDoList={this.props.fetchToDoList} toDoList={this.props.toDoList} projectId={projectId} deleteToDo={this.props.deleteToDo}/>
                 </Grid.Column>
                 <Grid.Column floated="right" width={5}>
                   <ProjectMaterials
@@ -96,7 +93,7 @@ class Show extends Component {
                   <ResearchImages fetchResearchImages={this.props.fetchResearchImages} researches={this.props.researches} projectId={projectId} deleteResearch={this.props.deleteResearch}/>
                 </Grid.Column>
                 <Grid.Column floated="right" width={7}>
-                  <FinishedPictures projects={this.props.finished}/>
+                  <ResearchImages fetchResearchImages={this.props.fetchResearchImages} researches={this.props.researches} projectId={projectId} deleteResearch={this.props.deleteResearch}/>
                 </Grid.Column>
               </Grid>
               <Button onClick={()=> this.props.deleteProject(project.id)}>Delete Project</Button>

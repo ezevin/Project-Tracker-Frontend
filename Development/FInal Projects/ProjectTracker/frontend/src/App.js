@@ -24,7 +24,8 @@ class App extends Component {
     materialsInUse: [],
     user: [],
     research: [],
-    allResearch: []
+    allResearch: [],
+    toDoList: []
   }
 
   componentDidMount(){
@@ -72,7 +73,7 @@ class App extends Component {
   dropDown = (id) => {
     fetch(`http://localhost:3001/api/v1/projects/${id}`)
     .then(res => res.json())
-    .then(data => this.setState({projectMaterials: data.materials, pId: id, researches: data.researches}, console.log(data.researches)))
+    .then(data => this.setState({projectMaterials: data.materials, pId: id, researches: data.researches, toDoList: data.to_do_lists}, console.log(data)))
 
   }
   /******************************************/
@@ -236,9 +237,33 @@ class App extends Component {
   /******************************************/
   /*                                        */
   /******************************************/
+  /******************************************/
+  /*             To Do Lists                */
+  /******************************************/
+
+  fetchToDoList = () => {
+    let id = this.state.pId
+
+    fetch(`http://localhost:3001/api/v1/projects/${id}`)
+    .then(res => res.json())
+    .then(data => this.setState({toDoList: data.to_do_lists}))
+  }
+
+  deleteToDo = (item) => {
+    console.log("???", item);
+    const deleted = this.state.toDoList.find(list => list.id === item)
+    console.log("item", deleted);
+    fetch(`http://localhost:3001/api/v1/to_do_lists/${deleted.id}`, {
+      method:"delete"
+    })
+    .then(() =>this.fetchToDoList())
+  }
+
+  /******************************************/
+  /*                                        */
+  /******************************************/
   render (){
 
-    console.log("what?", this.state.user);
     const unfinished = this.state.projects.filter(project => {
       if(project.finished === false){
       return project
@@ -250,12 +275,6 @@ class App extends Component {
       }
     })
 
-
-    // const all = this.state.allProjects.filter(project => {
-    //   if(project.id === this.state.pId){
-    //   return project.materials}
-    // })
-    console.log(this.state.projectMaterials);
     return (
       <>
         <Top projects={unfinished} dropDown={this.dropDown} currentUser={this.state.currentUser} handleLogout={this.handleLogout}/><br />
@@ -265,10 +284,12 @@ class App extends Component {
                                                 addProject={this.addProject}
                                                 addMaterial={this.addMaterial}
                                                 deleteMaterial={this.deleteMaterial}
+                                                research={this.state.allResearch}
                                                 titles={this.handleTitleSort}
                                                 dates={this.handleDateSort}
                                                 id={this.state.id}
-                                                fetchMaterials={this.fetchMaterials}/>}/>
+                                                fetchMaterials={this.fetchMaterials}
+                                                dropDown={this.dropDown}/>}/>
           <Route path="/login" render={() => {
             return <Login handleUserLogin={this.handleUserLogin } handleLogout={this.handleLogout} addUsers={this.addUsers} users={this.state.users} currentUser={this.props.currentUser}/>}}/>
             <Route path="/signup" render={() => {
@@ -287,6 +308,9 @@ class App extends Component {
                fetchResearchImages={this.fetchResearchImages}
                researches={this.state.researches}
                deleteResearch={this.deleteResearch}
+               fetchToDoList={this.fetchToDoList}
+               toDoList={this.state.toDoList}
+               deleteToDo={this.deleteToDo}
                />}}
                />
           <Route path="/profile" render={() => {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Image, Modal, Header, Card, Button } from 'semantic-ui-react'
+import { Image, Modal, Card, Button } from 'semantic-ui-react'
 
 class ResearchGallery extends Component {
   render(){
@@ -7,7 +7,7 @@ class ResearchGallery extends Component {
     const trigger = <Card color='teal' fluid>
                       <Image src={this.props.photo}  size='medium'/>
                     </Card>
-                    console.log(this.props)
+
       return(
         <>
           <Modal size="fullscreen" basic  trigger={trigger}>

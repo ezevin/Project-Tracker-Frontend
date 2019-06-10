@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Image, Card } from 'semantic-ui-react'
-import { Link } from 'react-router-dom'
+import { } from 'react-router-dom'
 
 import AboutMe from '../Forms/AboutMe'
 import Name from '../Forms/Name'
@@ -10,7 +10,7 @@ import ProfilePic from '../Forms/ProfilePic'
 class Profile extends Component {
 
   render(){
-    console.log(this.props.user.username);
+
     const { username, name, age, about_me, profile_picture, id } = this.props.user
       return (
         <div>

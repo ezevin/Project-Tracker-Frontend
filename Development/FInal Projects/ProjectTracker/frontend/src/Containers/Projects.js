@@ -73,7 +73,7 @@ class Projects extends Component {
             </Grid.Column>
             </Grid>
         {this.props.projects.map(project =>(
-          <ProjectList key={project.id} project={project.title} projects={this.props.projects}/>
+          <ProjectList key={project.id} project={project.title} id={project.id} dropDown={this.props.dropDown} projects={this.props.projects}/>
           ))
         }
         <center><Popup trigger={<Button content='Start A New Project' />}

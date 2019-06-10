@@ -44,7 +44,7 @@ class Notes extends Component {
     const form = <Form onSubmit={this.handleSubmit}>
                   <Form.Field>
                     <label>Add A Note:</label>
-                    <TextArea placeholder={this.props.details} onChange={this.handleChange} />
+                    <TextArea value={this.props.details} onChange={this.handleChange} />
                   </Form.Field>
                   <Button type='submit'>Submit</Button>
                 </Form>

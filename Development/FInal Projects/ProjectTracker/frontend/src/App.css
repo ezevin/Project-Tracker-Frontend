@@ -41,3 +41,12 @@
 .box {
   border-color: black
 }
+
+.done {
+  color: red;
+  text-decoration: line-through;
+}
+
+.undone {
+  color: #61DAFB;
+}
