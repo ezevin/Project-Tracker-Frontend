@@ -8,6 +8,10 @@ class Title extends Component {
     isOpen: false
   }
 
+  componentDidMount() {
+    this.setState({title: this.props.title})
+  }
+
   handleOpen = () => {
     this.setState({isOpen: true})
   }
@@ -39,11 +43,13 @@ class Title extends Component {
         this.setState({isOpen: false})
   }
   render(){
-    // console.log(this.props);
+
+    const value = this.state.title
+
     const form = <Form onSubmit={this.handleSubmit}>
                   <Form.Field>
                     <label>Change Title:</label>
-                    <input placeholder={this.props.title} onChange={this.handleChange}/>
+                    <input value={value} onChange={this.handleChange}/>
                   </Form.Field>
                   <Button type='submit'>Submit</Button>
                 </Form>

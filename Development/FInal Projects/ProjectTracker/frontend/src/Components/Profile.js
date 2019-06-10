@@ -15,10 +15,10 @@ class Profile extends Component {
       return (
         <div>
         <center className="textMedium">{username}'s Profile</center>
-        <ProfilePic id={id} fetchUserData={this.props.fetchUserData}/><Card><Image src={profile_picture}/></Card>
-        <span className="color"><Name id={id} fetchUserData={this.props.fetchUserData}/>Name: {name}</span><br /><br />
-        <span className="color"><Age id={id} fetchUserData={this.props.fetchUserData}/>Age: {age} </span><br /><br />
-        <span className="color"><AboutMe id={id} fetchUserData={this.props.fetchUserData}/>About Me: "{about_me}"</span><br /><br />
+        <ProfilePic id={id} fetchUserData={this.props.fetchUserData}/><Card><Image src={profile_picture} image={profile_picture}/></Card>
+        <span className="color"><Name id={id} fetchUserData={this.props.fetchUserData} name={name}/>Name: {name}</span><br /><br />
+        <span className="color"><Age id={id} fetchUserData={this.props.fetchUserData} age={age}/>Age: {age} </span><br /><br />
+        <span className="color"><AboutMe id={id} fetchUserData={this.props.fetchUserData} about_me={about_me}/>About Me: "{about_me}"</span><br /><br />
         </div>
       )
   }

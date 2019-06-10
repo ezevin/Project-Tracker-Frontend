@@ -8,6 +8,10 @@ class Age extends Component {
     isOpen: false
   }
 
+  componentDidMount() {
+    this.setState({age: this.props.age})
+  }
+
   handleOpen = () => {
     this.setState({isOpen: true})
   }
@@ -37,11 +41,12 @@ class Age extends Component {
         this.setState({isOpen: false})
   }
   render(){
-    // console.log(this.props);
+    const value = this.state.age
+
     const form = <Form onSubmit={this.handleSubmit}>
                   <Form.Field>
                     <label>Update Age:</label>
-                    <input placeholder={this.props.age} onChange={this.handleChange}/>
+                    <input value={value} onChange={this.handleChange}/>
                   </Form.Field>
                   <Button type='submit'>Submit</Button>
                 </Form>

@@ -8,6 +8,10 @@ class StartDate extends Component {
     isOpen: false
   }
 
+  componentDidMount() {
+    this.setState({start_date: this.props.start_date})
+  }
+
   handleOpen = () => {
     this.setState({isOpen: true})
   }
@@ -39,11 +43,11 @@ class StartDate extends Component {
         this.setState({isOpen: false})
   }
   render(){
-    // console.log(this.props);
+    const value = this.state.start_date
     const form = <Form onSubmit={this.handleSubmit}>
                   <Form.Field>
                     <label>Change Start Date:</label>
-                    <input type="date" placeholder={this.props.start_date} onChange={this.handleChange}/>
+                    <input type="date" value={value} onChange={this.handleChange}/>
                   </Form.Field>
                   <Button type='submit'>Submit</Button>
                 </Form>

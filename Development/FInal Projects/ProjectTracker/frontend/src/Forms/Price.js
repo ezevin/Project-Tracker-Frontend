@@ -8,6 +8,10 @@ class Price extends Component {
     isOpen: false
   }
 
+  componentDidMount() {
+    this.setState({price: this.props.price})
+  }
+
   handleOpen = () => {
     this.setState({isOpen: true})
   }
@@ -37,11 +41,12 @@ class Price extends Component {
         this.setState({isOpen: false})
   }
   render(){
-    // console.log(this.props);
+    const value = this.state.price
+
     const form = <Form onSubmit={this.handleSubmit}>
                   <Form.Field>
                     <label>Update Price:</label>
-                    <input placeholder={this.props.price} onChange={this.handleChange}/>
+                    <input value={value} onChange={this.handleChange}/>
                   </Form.Field>
                   <Button type='submit'>Submit</Button>
                 </Form>

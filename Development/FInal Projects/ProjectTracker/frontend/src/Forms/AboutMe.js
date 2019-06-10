@@ -8,6 +8,10 @@ class AboutMe extends Component {
     isOpen: false
   }
 
+  componentDidMount() {
+    this.setState({about_me: this.props.about_me})
+  }
+
   handleOpen = () => {
     this.setState({isOpen: true})
   }
@@ -37,11 +41,14 @@ class AboutMe extends Component {
         this.setState({isOpen: false})
   }
   render(){
-    // console.log(this.props);
+    console.log(this.props, this.state);
+
+    const value = this.state.about_me
+
     const form = <Form onSubmit={this.handleSubmit}>
                   <Form.Field>
                     <label>Update About Me:</label>
-                    <input placeholder={this.props.about_me} onChange={this.handleChange}/>
+                    <input type="text" value={value} onChange={this.handleChange}/>
                   </Form.Field>
                   <Button type='submit'>Submit</Button>
                 </Form>

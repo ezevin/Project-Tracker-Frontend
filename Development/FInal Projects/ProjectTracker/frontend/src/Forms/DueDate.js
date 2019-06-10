@@ -8,6 +8,10 @@ class DueDate extends Component {
     isOpen: false
   }
 
+  componentDidMount() {
+    this.setState({due_date: this.props.due_date})
+  }
+
   handleOpen = () => {
     this.setState({isOpen: true})
   }
@@ -39,11 +43,13 @@ class DueDate extends Component {
         this.setState({isOpen: false})
   }
   render(){
-    // console.log(this.props);
+
+    const value = this.state.due_date
+
     const form = <Form onSubmit={this.handleSubmit}>
                   <Form.Field>
                     <label>Change Due Date:</label>
-                    <input type="date" placeholder={this.props.due_date} onChange={this.handleChange}/>
+                    <input type="date" value={value} onChange={this.handleChange}/>
                   </Form.Field>
                   <Button type='submit'>Submit</Button>
                 </Form>

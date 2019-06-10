@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { Form, Button, Popup, Icon } from 'semantic-ui-react'
 
-class Item extends Component {
+class NoteUpdate extends Component {
 
   state = {
-    label: "",
+    note: "",
     isOpen: false
   }
 
   componentDidMount() {
-    this.setState({label: this.props.label})
+    this.setState({note: this.props.note})
   }
 
   handleOpen = () => {
@@ -21,31 +21,35 @@ class Item extends Component {
   }
 
   handleChange = (e) => {
-    this.setState({label: e.target.value})
+    console.log(e.target.value);
+    this.setState({note: e.target.value})
   }
 
-  handleSubmit = (e) => {
-    e.preventDefault()
-    const { label } = this.state
-    fetch(`http://localhost:3001/api/v1/materials/${this.props.id}`, {
+  handleSubmit= (id) => {
+    const { note } = this.state
+
+    fetch(`http://localhost:3001/api/v1/notes/${this.props.id}`, {
           method: "PATCH",
           headers: {
             Accept: 'application/json',
             'Content-type': 'application/json'
           },
-          body: JSON.stringify({ label })
+          body: JSON.stringify({ note })
         })
         .then(res=>res.json())
         .then(data => {this.setState(data)})
-        .then(()=> this.props.fetchMaterials())
+        .then(()=> this.props.fetchNotes())
         this.setState({isOpen: false})
   }
+
   render(){
-    const value = this.state.label
+
+    const value = this.state.note
+
     const form = <Form onSubmit={this.handleSubmit}>
                   <Form.Field>
-                    <label>Update Item:</label>
-                    <input value={value} onChange={this.handleChange}/>
+                    <label>Update Note:</label>
+                    <input type="text" value={value} onChange={this.handleChange}/>
                   </Form.Field>
                   <Button type='submit'>Submit</Button>
                 </Form>
@@ -53,9 +57,10 @@ class Item extends Component {
     return (
       <Popup
         content={form}
-        trigger={<Icon size="small" name='add' />}
+        trigger={<Icon size="small" name='pencil alternate' />}
         on='click'
-        position='bottom right'
+        position='top left'
+        open={this.state.isOpen}
         onOpen={this.handleOpen}
         onClose={this.handleClose}
             />
@@ -64,4 +69,4 @@ class Item extends Component {
   }
 }
 
-export default Item
+export default NoteUpdate

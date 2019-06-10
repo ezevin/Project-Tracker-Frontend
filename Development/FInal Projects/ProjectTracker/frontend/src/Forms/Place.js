@@ -8,6 +8,10 @@ class Place extends Component {
     isOpen: false
   }
 
+  componentDidMount() {
+    this.setState({place_purchased: this.props.place_purchased})
+  }
+
   handleOpen = () => {
     this.setState({isOpen: true})
   }
@@ -37,11 +41,11 @@ class Place extends Component {
         this.setState({isOpen: false})
   }
   render(){
-    // console.log(this.props);
+    const value = this.state.place_purchased
     const form = <Form onSubmit={this.handleSubmit}>
                   <Form.Field>
                     <label>Update Place Purchased:</label>
-                    <input placeholder={this.props.place_purchased} onChange={this.handleChange}/>
+                    <input value={value} onChange={this.handleChange}/>
                   </Form.Field>
                   <Button type='submit'>Submit</Button>
                 </Form>

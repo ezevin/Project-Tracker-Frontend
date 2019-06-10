@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 import { Form, Button, Popup, Icon, TextArea } from 'semantic-ui-react'
 
-class Notes extends Component {
+class ProjectDeets
+ extends Component {
 
   state = {
     details: "",
     isOpen: false
+  }
+
+  componentDidMount() {
+    this.setState({details: this.props.details})
   }
 
   handleOpen = () => {
@@ -40,11 +45,13 @@ class Notes extends Component {
         this.setState({isOpen: false})
   }
   render(){
-    // console.log(this.props);
+
+    const value = this.state.details
+
     const form = <Form onSubmit={this.handleSubmit}>
                   <Form.Field>
-                    <label>Add A Note:</label>
-                    <TextArea value={this.props.details} onChange={this.handleChange} />
+                    <label>Change Summary:</label>
+                    <input value={value} onChange={this.handleChange} />
                   </Form.Field>
                   <Button type='submit'>Submit</Button>
                 </Form>
@@ -59,9 +66,8 @@ class Notes extends Component {
         onOpen={this.handleOpen}
         onClose={this.handleClose}
             />
-
     )
   }
 }
 
-export default Notes
+export default ProjectDeets

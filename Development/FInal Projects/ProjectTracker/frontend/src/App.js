@@ -25,7 +25,9 @@ class App extends Component {
     user: [],
     research: [],
     allResearch: [],
-    toDoList: []
+    toDoList: [],
+    notes: [],
+    processPics: []
   }
 
   componentDidMount(){
@@ -73,7 +75,7 @@ class App extends Component {
   dropDown = (id) => {
     fetch(`http://localhost:3001/api/v1/projects/${id}`)
     .then(res => res.json())
-    .then(data => this.setState({projectMaterials: data.materials, pId: id, researches: data.researches, toDoList: data.to_do_lists}, console.log(data)))
+    .then(data => this.setState({projectMaterials: data.materials, pId: id, researches: data.researches, toDoList: data.to_do_lists, notes: data.notes}, console.log("PROJECT DATA", data.notes)))
 
   }
   /******************************************/
@@ -262,6 +264,32 @@ class App extends Component {
   /******************************************/
   /*                                        */
   /******************************************/
+
+  /******************************************/
+  /*                 NOTES                  */
+  /******************************************/
+
+  fetchNotes = () => {
+    let id = this.state.pId
+
+    fetch(`http://localhost:3001/api/v1/projects/${id}`)
+    .then(res => res.json())
+    .then(data => this.setState({notes: data.notes}))
+  }
+
+  deleteNote = (item) => {
+    console.log("???", item);
+    const deleted = this.state.notes.find(note => note.id === item)
+    console.log("item", deleted);
+    fetch(`http://localhost:3001/api/v1/notes/${deleted.id}`, {
+      method:"delete"
+    })
+    .then(() =>this.fetchNotes())
+  }
+
+  /******************************************/
+  /*                                        */
+  /******************************************/
   render (){
 
     const unfinished = this.state.projects.filter(project => {
@@ -311,6 +339,9 @@ class App extends Component {
                fetchToDoList={this.fetchToDoList}
                toDoList={this.state.toDoList}
                deleteToDo={this.deleteToDo}
+               fetchNotes={this.fetchNotes}
+               notes={this.state.notes}
+               deleteNote={this.deleteNote}
                />}}
                />
           <Route path="/profile" render={() => {

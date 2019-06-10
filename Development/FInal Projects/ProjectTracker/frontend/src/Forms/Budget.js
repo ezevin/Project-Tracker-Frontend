@@ -8,6 +8,10 @@ class Budget extends Component {
     isOpen: false
   }
 
+  componentDidMount() {
+    this.setState({ budget: this.props. budget})
+  }
+
   handleOpen = () => {
     this.setState({isOpen: true})
   }
@@ -37,11 +41,13 @@ class Budget extends Component {
         this.setState({isOpen: false})
   }
   render(){
-    // console.log(this.props);
+
+    const value = this.state.budget
+
     const form = <Form onSubmit={this.handleSubmit}>
                   <Form.Field>
                     <label>Update Budget:</label>
-                    <input placeholder={this.props.budget} onChange={this.handleChange}/>
+                    <input value={value} onChange={this.handleChange}/>
                   </Form.Field>
                   <Button type='submit'>Submit</Button>
                 </Form>

@@ -1,15 +1,18 @@
 import React, { Component } from 'react'
 import { Icon, Grid, List } from 'semantic-ui-react'
 
+import AddProcess from '../Forms/AddProcess'
+
 class ItemList extends Component {
 
   render (){
 
       const todoClass = this.props.complete ?
           "done" : "undone";
+
       return(
         <>
-       <List animated divided inverted relaxed className={todoClass}>
+       <List divided inverted relaxed className={todoClass}>
         <List.Item>
           <List.Content>
             <Grid>
@@ -20,6 +23,7 @@ class ItemList extends Component {
                {this.props.item}
               </Grid.Column>
               <Grid.Column width={3} floated="right">
+                <AddProcess toDoList={this.props.toDoList} process_pics={this.props.pics} id={this.props.id} fetchToDoList={this.props.fetchToDoList}/>
                <Icon name="delete"  onClick={()=> this.props.deleteToDo(this.props.id)}/>
              </Grid.Column>
             </Grid>

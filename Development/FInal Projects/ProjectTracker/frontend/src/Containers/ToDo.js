@@ -12,12 +12,13 @@ class ToDo extends Component {
   }
 
   handleChange = (e) => {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     this.setState({item: e.target.value})
   }
   //
   handleSubmit = (e) => {
     e.preventDefault()
+    e.target.reset();
 
     const { item } = this.state
 
@@ -71,7 +72,8 @@ class ToDo extends Component {
         </center><br />
         <Grid columns={5} padded className="link cards ">
           {this.props.toDoList.map(list =>(
-             <ItemList key={list.id} list={list} toDoList={this.props.toDoList} id={list.id} complete={list.complete} item={list.item} deleteToDo={this.props.deleteToDo} handleDone={this.handleDone}/>
+             <ItemList key={list.id} list={list}
+              fetchToDoList={this.props.fetchToDoList} toDoList={this.props.toDoList} id={list.id} complete={list.complete} item={list.item} deleteToDo={this.props.deleteToDo} handleDone={this.handleDone} pics={list.process_pic}/>
           ))}
         </Grid>
       </>

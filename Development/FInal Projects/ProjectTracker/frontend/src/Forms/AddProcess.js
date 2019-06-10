@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
 import { Form, Button, Popup, Icon } from 'semantic-ui-react'
 
-class Item extends Component {
+class AddProcess extends Component {
 
   state = {
-    label: "",
+    process_pic: "",
     isOpen: false
-  }
-
-  componentDidMount() {
-    this.setState({label: this.props.label})
   }
 
   handleOpen = () => {
@@ -21,31 +17,35 @@ class Item extends Component {
   }
 
   handleChange = (e) => {
-    this.setState({label: e.target.value})
+    console.log(e.target.value);
+    this.setState({process_pic: e.target.value})
   }
 
   handleSubmit = (e) => {
     e.preventDefault()
-    const { label } = this.state
-    fetch(`http://localhost:3001/api/v1/materials/${this.props.id}`, {
+    // debugger
+    const { process_pic } = this.state
+
+    fetch(`http://localhost:3001/api/v1/to_do_lists/${this.props.id}`, {
           method: "PATCH",
           headers: {
             Accept: 'application/json',
             'Content-type': 'application/json'
           },
-          body: JSON.stringify({ label })
+          body: JSON.stringify({ process_pic: this.state.process_pic })
         })
         .then(res=>res.json())
-        .then(data => {this.setState(data)})
-        .then(()=> this.props.fetchMaterials())
+        .then(data => {console.log(data)})
+        .then(()=> this.props.fetchToDoList())
         this.setState({isOpen: false})
   }
+
   render(){
-    const value = this.state.label
+    // console.log(this.props);
     const form = <Form onSubmit={this.handleSubmit}>
                   <Form.Field>
-                    <label>Update Item:</label>
-                    <input value={value} onChange={this.handleChange}/>
+                    <label>Add A Process Picture:</label>
+                    <input placeholder="Process Picture" onChange={this.handleChange}/>
                   </Form.Field>
                   <Button type='submit'>Submit</Button>
                 </Form>
@@ -53,9 +53,10 @@ class Item extends Component {
     return (
       <Popup
         content={form}
-        trigger={<Icon size="small" name='add' />}
+        trigger={<Icon size="small" name='file image outline' />}
         on='click'
         position='bottom right'
+        open={this.state.isOpen}
         onOpen={this.handleOpen}
         onClose={this.handleClose}
             />
@@ -64,4 +65,4 @@ class Item extends Component {
   }
 }
 
-export default Item
+export default AddProcess
