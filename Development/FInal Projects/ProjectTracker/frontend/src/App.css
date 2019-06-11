@@ -50,3 +50,7 @@
 .undone {
   color: #61DAFB;
 }
+
+.scroll {
+  overflow-y: scroll;
+}

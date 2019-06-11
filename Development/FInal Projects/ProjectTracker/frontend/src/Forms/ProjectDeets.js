@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Button, Popup, Icon, TextArea } from 'semantic-ui-react'
+import { Form, Button, Popup, Icon } from 'semantic-ui-react'
 
 class ProjectDeets
  extends Component {

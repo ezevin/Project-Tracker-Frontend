@@ -1,23 +1,23 @@
 import React, { Component } from 'react'
-import { Dropdown, Container } from 'semantic-ui-react'
-import { } from 'react-router-dom'
+import { Grid, Container } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
 
 
   class ProjectList extends Component {
 
     render() {
       return (
-        <>
         <Container align="center">
-          <Dropdown  text={this.props.project}>
-           <Dropdown.Menu>
-             <Dropdown.Item text='To Do List' />
-           </Dropdown.Menu>
-          </Dropdown><br /><br />
+          <Grid>
+            <Grid.Column width={6}>
+              <span>{this.props.project}</span>
+            </Grid.Column>
+            <Grid.Column width={6}>
+              <span>{this.props.dueDate}</span>
+            </Grid.Column>
+          </Grid>
         </Container>
-        </>
       )
-
     }
   }
 

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Header, Button, Popup, Form, Search, Grid } from 'semantic-ui-react'
+import { Link, withRouter } from 'react-router-dom'
+import { Header, Button, Popup, Form, Search, Grid, Container } from 'semantic-ui-react'
 
 import ProjectList from '../Components/ProjectList'
 
@@ -43,6 +44,7 @@ class Projects extends Component {
         })
         .then(res=>res.json())
         .then(data => {this.props.addProject(data)})
+        // .then(data => this.props.history.push(`/show/${data.id}`))
         this.setState({isOpen: false})
   }
 
@@ -72,11 +74,23 @@ class Projects extends Component {
                 <input type="radio" value="DueDate" checked={value === 'DueDate'} onChange={this.props.dates}/>
             </Grid.Column>
             </Grid>
+            <Container align="center">
+              <Grid>
+                <Grid.Column width={6}>
+                  <span>Project Name:</span>
+                </Grid.Column>
+                <Grid.Column width={6}>
+                  <span>Due Date:</span>
+                </Grid.Column>
+              </Grid>
+            </Container>
         {this.props.projects.map(project =>(
-          <ProjectList key={project.id} project={project.title} id={project.id} dropDown={this.props.dropDown} projects={this.props.projects}/>
+          <Link to={`/show/${project.id}`} key={project.id} onClick={()=>this.props.dropDown(project.id)}>
+          <ProjectList key={project.id} project={project.title} dueDate={project.due_date} id={project.id} dropDown={this.props.dropDown} projects={this.props.projects}/>
+          </Link>
           ))
         }
-        <center><Popup trigger={<Button content='Start A New Project' />}
+        <br /><center><Popup trigger={<Button content='Start A New Project' />}
                   content={form}
                   on='click'
                   position='bottom right'
@@ -90,4 +104,4 @@ class Projects extends Component {
 }
 
 
-export default Projects
+export default withRouter(Projects)

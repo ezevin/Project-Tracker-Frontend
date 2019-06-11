@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import { Route } from 'react-router-dom'
 import { withRouter } from 'react-router-dom'
 import { Header, Grid, Button, Divider } from 'semantic-ui-react'
 
@@ -18,7 +17,12 @@ import ToDo from './ToDo'
 
 class Show extends Component {
   state = {
-    search: ''
+    search: '',
+    projects: [],
+    researches: [],
+    toDoList: [],
+    projectMaterials: [],
+    notes: []
   }
 
   handleSearch = (e, {value}) => {
@@ -26,46 +30,64 @@ class Show extends Component {
     // console.log(value)
   }
 
+  componentDidMount(){
+    fetch(`http://localhost:3001/api/v1/projects/${this.props.slug}`)
+    .then(res => res.json())
+    .then(data => this.setState({projects: data, researches: data.researches, toDoList: data.to_do_lists, projectMaterials: data.materials, notes: data.notes}))
+
+  }
 
   render(){
+    // debugger
+    console.log(this.props);
+    const { id, title, details, start_date, due_date, finished, budget } = this.state.projects
 
-    const prices = this.props.projectMaterials.map(material => material.price)
+    // const id = this.props.pm.map(pm => pm.material_id)
+    const prices = this.state.projectMaterials.map(material => {
+      // if(material.id === id){
+      //   console.log(material.id, id);
+        return material.price
+       // }
+    })
     const total = prices.reduce((a,b) => a+b, 0)
+    // const id = this.props.projectMaterials.map(material => material.id)
 
-    const { projectId, projects, projectMaterials } = this.props
-    const filteredMaterials = projectMaterials.filter(material =>{
+    // console.log(prices);
+    const { projectId, projectMaterials } = this.props
+    const filteredMaterials = this.state.projectMaterials.filter(material =>{
       // console.log(material.label);
       return material.label.toLowerCase().includes(this.state.search.toLowerCase())
     })
 
-    return (projects.map(project => {
-      if(project.id === projectId){
+
+      // if(project.id === this.props.slug){
+        console.log("OKAY");
         return (
-          <div key={project.id}>
-              <Header inverted color='grey' textAlign='center' as='h1'>{project.title}
-                <Title id={project.id} title={project.title} fetchProjects={this.props.fetchProjects}/>
+          <div key={id}>
+              <Header inverted color='grey' textAlign='center' as='h1'>{title}
+                <Title id={id} title={title} fetchProjects={this.props.fetchProjects}/>
               </Header>
-              <Header  inverted color='grey' textAlign='center' as="h3">Summary: {project.details}<ProjectDeets id={project.id} details={project.details} fetchProjects={this.props.fetchProjects}/></Header>
+              <Header  inverted color='grey' textAlign='center' as="h3">Summary: {details}<ProjectDeets id={id} details={details} fetchProjects={this.props.fetchProjects}/></Header>
 
             <Grid padded>
               <Grid.Row>
-                <Grid.Column width={6} floated='left'>Date Started: {project.start_date}
-                  <StartDate id={project.id} start_date={project.start_date} fetchProjects={this.props.fetchProjects}/>
+                <Grid.Column width={6} floated='left'>Date Started: {start_date}
+                  <StartDate id={id} start_date={start_date} fetchProjects={this.props.fetchProjects}/>
                 </Grid.Column>
 
                 <Grid.Column width={5}>
-                  <Finished projectId={this.props.projectId} finished={project.finished} fetchProjects={this.props.fetchProjects}/>
+                  <Finished projectId={id} finished={finished} fetchProjects={this.props.fetchProjects}/>
                 </Grid.Column>
 
-                <Grid.Column width={3} floated='right'>Date Due: {project.due_date}
-                  <DueDate id={project.id} due_date={project.due_date} fetchProjects={this.props.fetchProjects}/>
+                <Grid.Column width={3} floated='right'>Date Due: {due_date}
+                  <DueDate id={id} due_date={due_date} fetchProjects={this.props.fetchProjects}/>
                 </Grid.Column>
               </Grid.Row>
-              <Grid.Column width={6} floated='left'>Budget: ${project.budget}
-                <Budget id={project.id} budget={project.budget} fetchProjects={this.props.fetchProjects}/>
+              <Grid.Column width={6} floated='left'>Budget: ${budget}
+                <Budget id={id} budget={budget} fetchProjects={this.props.fetchProjects}/>
               </Grid.Column>
 
-              <Grid.Column width={3} floated='right'>Remaining Budget: ${project.budget - total}</Grid.Column>
+              <Grid.Column width={3} floated='right'>Remaining Budget: ${budget - (total )}</Grid.Column>
             </Grid>
 
             <Divider inverted/>
@@ -73,38 +95,39 @@ class Show extends Component {
 
               <Grid padded>
                 <Grid.Column floated='left' width={5}>
-                  <Notes notes={this.props.notes} fetchNotes={this.props.fetchNotes} deleteNote={this.props.deleteNote} projectId={projectId}/>
+                  <Notes notes={this.state.notes} fetchNotes={this.props.fetchNotes} deleteNote={this.props.deleteNote} projectId={projectId}/>
                 </Grid.Column>
 
                 <Grid.Column  width={6}>
-                  <ToDo fetchToDoList={this.props.fetchToDoList} toDoList={this.props.toDoList} projectId={projectId} deleteToDo={this.props.deleteToDo}/>
+                  <ToDo fetchToDoList={this.props.fetchToDoList} toDoList={this.state.toDoList} projectId={projectId} deleteToDo={this.props.deleteToDo}/>
                 </Grid.Column>
                 <Grid.Column floated="right" width={5}>
                   <ProjectMaterials
-                    id={project.id}
+                    id={id}
                     materials={filteredMaterials}
                     handleSearch={this.handleSearch}
                     allMaterials={this.props.materials}
                     fetchProjectMaterials={this.props.fetchProjectMaterials}
                     addProjectMaterial={this.props.addProjectMaterial}
-                    deleteMaterial={this.props.deleteProjectMaterials}/>
+                    deleteMaterial={this.props.deleteProjectMaterials}
+                    pm={this.props.pm}/>
                 </Grid.Column>
               </Grid>
               <Grid>
                 <Grid.Column  width={7}>
-                  <ResearchImages fetchResearchImages={this.props.fetchResearchImages} researches={this.props.researches} projectId={projectId} deleteResearch={this.props.deleteResearch}/>
+                  <ResearchImages fetchResearchImages={this.props.fetchResearchImages} researches={this.state.researches} projectId={projectId} deleteResearch={this.props.deleteResearch}/>
                 </Grid.Column>
                 <Grid.Column floated="right" width={7}>
-                  <ProcessPics fetchToDoList={this.props.fetchToDoList} toDoList={this.props.toDoList} projectId={projectId} />
+                  <ProcessPics fetchToDoList={this.props.fetchToDoList} toDoList={this.state.toDoList} projectId={projectId} />
                 </Grid.Column>
               </Grid>
-              <Button onClick={()=> this.props.deleteProject(project.id)}>Delete Project</Button>
+              <Button onClick={()=> this.props.deleteProject(id)}>Delete Project</Button>
             </div>
-      )}else {
+      )
+      // else {
         // return this.props.history.push("home")
-      }
+      // }
 
-    }))
   }
 }
 

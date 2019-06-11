@@ -70,10 +70,17 @@ class ToDo extends Component {
             </center>
           </Form>
         </center><br />
+        <Grid>
+        <Grid.Column width={3}><span>Done?</span></Grid.Column>
+        <Grid.Column width={6}><span>Task:</span></Grid.Column>
+        <Grid.Column width={3}><span>Add Picture:</span></Grid.Column>
+        <Grid.Column width={3}><span>Remove:</span></Grid.Column>
+        <Grid.Column width={3}></Grid.Column>
+        </Grid>
         <Grid columns={5} padded className="link cards ">
           {this.props.toDoList.map(list =>(
-             <ItemList key={list.id} list={list}
-              fetchToDoList={this.props.fetchToDoList} toDoList={this.props.toDoList} id={list.id} complete={list.complete} item={list.item} deleteToDo={this.props.deleteToDo} handleDone={this.handleDone} pics={list.process_pic}/>
+             <><ItemList key={list.id} list={list}
+              fetchToDoList={this.props.fetchToDoList} toDoList={this.props.toDoList} id={list.id} complete={list.complete} item={list.item} deleteToDo={this.props.deleteToDo} handleDone={this.handleDone} pics={list.process_pic}/><br /></>
           ))}
         </Grid>
       </>

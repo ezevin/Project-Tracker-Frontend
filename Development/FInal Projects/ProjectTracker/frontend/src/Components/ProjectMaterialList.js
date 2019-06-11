@@ -1,16 +1,20 @@
 import React, { Component } from 'react'
-import { Container, List, Grid } from 'semantic-ui-react'
+import { Container, List, Grid, Icon } from 'semantic-ui-react'
 
 import ProjectMaterialInfo from './ProjectMaterialInfo'
 
 class ProjectMaterialList extends Component {
 
   render(){
-    // debugger
+    const quantity = this.props.pm.map(pm => {
+      if(pm.material_id === this.props.id){
+        return pm.quantity
+      }
+    })
 
     return (
       <Container>
-        <Grid>
+        <Grid >
           <Grid.Column width={3}>
             <List>
               <List.Item><h4>{this.props.label}</h4></List.Item>
@@ -21,9 +25,9 @@ class ProjectMaterialList extends Component {
               <List.Item><h4>${this.props.price}</h4></List.Item>
             </List>
           </Grid.Column>
-          <Grid.Column width={3}>
+          <Grid.Column width={4}>
             <List >
-              <List.Item><h4>{this.props.quantity}</h4></List.Item>
+              <List.Item><h4><Icon name="minus"/> {quantity} <Icon name="add"/></h4></List.Item>
             </List>
           </Grid.Column>
           <Grid.Column width={3}>
@@ -33,7 +37,7 @@ class ProjectMaterialList extends Component {
                 materials={this.props.material}
                 label={this.props.label}
                 price={this.props.price}
-                quantity={this.props.quantity}
+                quantity={quantity}
                 description={this.props.description}
                 id={this.props.id}
                 image_url={this.props.image_url}

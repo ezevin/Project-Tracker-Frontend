@@ -13,6 +13,7 @@ class ProjectMaterials extends Component {
     all: []
   }
 
+
   handleOpen = () => {
     this.setState({isOpen: true})
   }
@@ -34,7 +35,10 @@ class ProjectMaterials extends Component {
       .then(res=>{res.json()})
       .then(data => {this.props.addProjectMaterial(data)})
       .then(()=>this.props.fetchProjectMaterials())
+
       this.setState({isOpen: false})
+
+
   }
 
   handleQuantity = () => {
@@ -44,24 +48,13 @@ class ProjectMaterials extends Component {
   }
 
   render (){
-    // console.log("all", this.props.allMaterials, "project", this.props.materials);
 
-    // const quantity = this.props.materials
     const form = this.props.allMaterials.map(material => {
       return  (<List>
         <Button key={material.id} onClick={()=>this.handleClick(material.id)}>{material.label} ${material.price} ({material.quantity})</Button>
         </List>)
       })
 
-    //  this.props.materials.reduce((all, item) => {
-    //    // console.log("all", all, "item", item);
-    //   // all[item] = (all[item] || 0) + 1
-    //   // return all}, {}
-    // }
-    // )
-
-
-    // console.log(length);
     return (
       <>
         <Header inverted color='grey' textAlign="center" as='h2'>Inventory</Header>
@@ -81,8 +74,11 @@ class ProjectMaterials extends Component {
             quantity={material.quantity}
             description={material.description}
             id={material.id}
-            image_url={material.image_url} place_purchased={material.place_purchased} deleteMaterial={this.props.deleteMaterial}
-            fetchMaterials={this.props.fetchMaterials}/>
+            image_url={material.image_url}
+            place_purchased={material.place_purchased}
+            deleteMaterial={this.props.deleteMaterial}
+            fetchMaterials={this.props.fetchMaterials}
+            pm={this.props.pm}/>
         ))}<br />
         <center><center><Popup trigger={<Button content='Add A Material' />}
                   content={form}

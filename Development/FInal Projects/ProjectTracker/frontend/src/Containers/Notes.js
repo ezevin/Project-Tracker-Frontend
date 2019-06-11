@@ -45,7 +45,7 @@ class Notes extends Component {
           {this.props.notes.map(note =>(
              <NoteList key={note.id} handleUpdate={this.handleUpdate} note={note.note} notes={this.props.notes} id={note.id} item={note.item} deleteNote={this.props.deleteNote} fetchNotes={this.props.fetchNotes} projectId={this.props.projectId} />
           ))}
-        </Grid>
+        </Grid><br />
         <center>
           <Form ref="form" inverted onSubmit={this.handleSubmit}>
             <center>

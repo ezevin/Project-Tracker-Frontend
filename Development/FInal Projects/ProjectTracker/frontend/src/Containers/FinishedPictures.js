@@ -38,9 +38,9 @@ class FinishedPictures extends Component {
           </center><br />
         </Grid.Column>
         </Grid>
-        <Grid columns={5} padded className="link cards ">
+        <Grid columns={5} padded className="link cards">
           {filtered.map(project =>(
-             <Gallery key={project.id} photo={project.finished_image} title={project.title} details={project.details} finished_image={project.finished_image} projectId={project.id} research={this.props.research}/>
+             <Gallery key={project.id} photo={project.finished_image} title={project.title} details={project.details} finished_image={project.finished_image} projectId={project.id} research={this.props.research} toDoList={this.props.toDoList}   allNotes={this.props.allNotes}/>
           ))}
         </Grid>
 

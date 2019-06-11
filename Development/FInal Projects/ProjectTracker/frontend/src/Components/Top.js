@@ -8,11 +8,12 @@ class Top extends Component {
 
 
   render(){
-
+    // const name = this.props.currentUser.map(user => user.username)
     return (
       <div>
        <br />
-       <Header  inverted color='grey' textAlign='center' as='h1'>Project Tracker</Header>
+       <Header  inverted color='grey' textAlign='center' as='h1'>FabFolio</Header>
+       <Header  inverted color='grey' textAlign='center' as='h3'>A Fabricator's Portfolio</Header>
        <br />
        <Menu >
         <Link to="/home" >
@@ -21,7 +22,7 @@ class Top extends Component {
           </Menu.Item>
         </Link>
 
-        <Link to="/gallery">
+        <Link to={`/gallery/${this.props.id}`}>
           <Menu.Item name='gallery' >
               Gallery
           </Menu.Item>
@@ -32,7 +33,7 @@ class Top extends Component {
             <Dropdown item text='Current Projects'>
               <Dropdown.Menu>
               {this.props.projects.map(project => (
-                <Link to="/show" key={project.id} onClick={()=>this.props.dropDown(project.id)}>
+                <Link to={`/show/${project.id}`} key={project.id} onClick={()=>this.props.dropDown(project.id)}>
                   <Dropdown.Item>{project.title}</Dropdown.Item>
                 </Link>
               ))}

@@ -32,7 +32,7 @@ class AddProcess extends Component {
             Accept: 'application/json',
             'Content-type': 'application/json'
           },
-          body: JSON.stringify({ process_pic: this.state.process_pic })
+          body: JSON.stringify({ process_pic })
         })
         .then(res=>res.json())
         .then(data => {console.log(data)})

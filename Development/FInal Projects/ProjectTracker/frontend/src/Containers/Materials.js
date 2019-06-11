@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Header, Search, Button, Form, Popup, Grid } from 'semantic-ui-react'
+import { Header, Search, Button, Form, Popup, Grid, Container } from 'semantic-ui-react'
 
 import MaterialsList from '../Components/MaterialsList'
 
@@ -7,6 +7,7 @@ class Materials extends Component {
   state = {
     label: "",
     user_id: "",
+    material_id: "",
     isOpen: false
   }
 
@@ -41,8 +42,11 @@ class Materials extends Component {
         'Content-type': 'application/json'
       },
       body: JSON.stringify({
-        label, price, quantity, user_id:this.props.id
-       })
+          label,
+          price,
+          quantity,
+        user_id: this.props.id,
+      })
     })
     .then(res=>res.json())
     .then(data => {this.props.addMaterial(data)})
@@ -50,6 +54,7 @@ class Materials extends Component {
   }
 
   render(){
+
     const form = <Form onSubmit={this.handleSubmit}>
                   <Form.Field>
                     <label>Material Name:</label>
@@ -82,18 +87,18 @@ class Materials extends Component {
           <Grid.Column width={3}></Grid.Column>
           <Grid.Column width={3}></Grid.Column>
         </Grid>
+        <Container className="scroll">
         {this.props.materials.map(material => (
           <MaterialsList
             key={material.id}
             materials={material}
             label={material.label}
             price={material.price}
-            quantity={material.quantity}
             description={material.description}
             id={material.id}
             image_url={material.image_url} place_purchased={material.place_purchased} deleteMaterial={this.props.deleteMaterial}
-            fetchMaterials={this.props.fetchMaterials}/>
-        ))}<br />
+            fetchMaterials={this.props.fetchMaterials} um={this.props.um}/>
+        ))}</Container><br />
         <center><center><Popup trigger={<Button content='Add A New Material' />}
                   content={form}
                   on='click'

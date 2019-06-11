@@ -8,7 +8,7 @@ import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
   <BrowserRouter>
-    <App title="Project Tracker"/>
+    <App title="FabFolio"/>
   </BrowserRouter>,
   document.getElementById('root')
 );

@@ -9,6 +9,7 @@ class ProcessList extends Component {
       const trigger = <Card color='teal' fluid>
                         <Image src={this.props.photo}  size='medium'/>
                       </Card>
+          console.log(this.props.photo);
 
       return(
         <>

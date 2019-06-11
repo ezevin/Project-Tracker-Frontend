@@ -9,7 +9,7 @@ class Budget extends Component {
   }
 
   componentDidMount() {
-    this.setState({ budget: this.props. budget})
+    this.setState({budget: this.props.budget})
   }
 
   handleOpen = () => {

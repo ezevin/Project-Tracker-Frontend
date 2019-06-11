@@ -9,7 +9,24 @@ import Materials from './Materials'
 class Main extends Component {
   state = {
     search: '',
-    psearch: ''
+    psearch: '',
+    research: [],
+    toDoList: [],
+    allNotes: []
+  }
+
+  componentDidMount() {
+  fetch('http://localhost:3001/api/v1/researches')
+  .then(res => res.json())
+  .then(data => this.setState({allResearch: data}))
+
+  fetch('http://localhost:3001/api/v1/to_do_lists')
+  .then(res => res.json())
+  .then(data => this.setState({allToDo: data}))
+
+  fetch('http://localhost:3001/api/v1/notes')
+  .then(res => res.json())
+  .then(data => this.setState({allNotes: data}))
   }
 
   handleSearch = (e, {value}) => {
@@ -33,8 +50,8 @@ class Main extends Component {
       return project.title.toLowerCase().includes(this.state.psearch.toLowerCase())
     })
 
-    return (
 
+    return (
       <>
         <br />
         <Grid>
@@ -50,7 +67,7 @@ class Main extends Component {
             />
           </Grid.Column>
           <Grid.Column  width={6}>
-            <MainGallery projects={this.props.finished} research={this.props.research}/>
+            <MainGallery projects={this.props.finished} research={this.props.research} toDoList={this.props.toDoList} allNotes={this.props.allNotes}/>
           </Grid.Column>
           <Grid.Column floated="right" width={5}>
             <Materials materials={filteredMaterials}
@@ -59,6 +76,7 @@ class Main extends Component {
              handleSearch={this.handleSearch}
              deleteMaterial={this.props.deleteMaterial}
              fetchMaterials={this.props.fetchMaterials}
+             um={this.props.um}
             />
           </Grid.Column>
         </Grid>
