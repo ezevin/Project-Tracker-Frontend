@@ -22,69 +22,137 @@ class Show extends Component {
     researches: [],
     toDoList: [],
     projectMaterials: [],
-    notes: []
-  }
-
-  handleSearch = (e, {value}) => {
-    this.setState({search: value})
-    // console.log(value)
+    notes: [],
+    id: "",
+    pm: []
   }
 
   componentDidMount(){
     fetch(`http://localhost:3001/api/v1/projects/${this.props.slug}`)
     .then(res => res.json())
-    .then(data => this.setState({projects: data, researches: data.researches, toDoList: data.to_do_lists, projectMaterials: data.materials, notes: data.notes}))
+    .then(data => this.setState({projects: data, researches: data.researches, toDoList: data.to_do_lists, projectMaterials: data.materials, notes: data.notes, id: data.id}))
 
+    fetch('http://localhost:3001/api/v1/project_materials')
+    .then(res => res.json())
+    .then(data => this.setState({pm: data},console.log("PM", data)))
+  }
+
+  fetchProjects = () => {
+    fetch(`http://localhost:3001/api/v1/projects/${this.state.id}`)
+    .then(res => res.json())
+    .then(data => this.setState({projects: data}))
+  }
+
+  fetchProjectMaterials = () => {
+    fetch(`http://localhost:3001/api/v1/projects/${this.state.id}`)
+    .then(res => res.json())
+    .then(data => this.setState({projectMaterials: data.materials}))
+  }
+
+  fetchPM = () => {
+    fetch('http://localhost:3001/api/v1/project_materials')
+    .then(res => res.json())
+    .then(data => this.setState({pm: data},console.log("PM", data)))
+  }
+
+  addProjectMaterial = (projectmaterial) => {
+    this.setState({pm: [...this.state.pm, projectmaterial]})
+  }
+
+  deleteProjectMaterials = (id) => {
+     const deleted = this.state.projectMaterials.find(material => material.id === id)
+     this.state.pm.find(item => {
+       if (item.project_id === this.state.id && item.material_id === deleted.id){
+         fetch(`http://localhost:3001/api/v1/project_materials/${item.id}`, {
+           method: "delete"
+         })
+         .then(() =>this.fetchProjectMaterials())
+       }})
+  }
+
+  handleSearch = (e, {value}) => {
+    this.setState({search: value})
+  }
+
+  fetchToDoList = () => {
+    fetch(`http://localhost:3001/api/v1/projects/${this.state.id}`)
+    .then(res => res.json())
+    .then(data => this.setState({toDoList: data.to_do_lists}))
+  }
+
+  deleteToDo = (item) => {
+    const deleted = this.state.toDoList.find(list => list.id === item)
+    fetch(`http://localhost:3001/api/v1/to_do_lists/${deleted.id}`, {
+      method:"delete"
+    })
+    .then(() =>this.fetchToDoList())
+  }
+
+  fetchNotes = () => {
+    fetch(`http://localhost:3001/api/v1/projects/${this.state.id}`)
+    .then(res => res.json())
+    .then(data => this.setState({notes: data.notes}))
+  }
+
+  deleteNote = (item) => {
+    const deleted = this.state.notes.find(note => note.id === item)
+    fetch(`http://localhost:3001/api/v1/notes/${deleted.id}`, {
+      method:"delete"
+    })
+    .then(() =>this.fetchNotes())
+  }
+
+  fetchResearchImages = () => {
+    fetch(`http://localhost:3001/api/v1/projects/${this.state.id}`)
+    .then(res => res.json())
+    .then(data => this.setState({researches: data.researches}))
+  }
+
+  deleteResearch = (item) => {
+    const deleted = this.state.researches.find(research => research.id === item)
+    fetch(`http://localhost:3001/api/v1/researches/${deleted.id}`, {
+      method:"delete"
+    })
+    .then(() =>this.fetchResearchImages())
   }
 
   render(){
-    // debugger
-    console.log(this.props);
+
     const { id, title, details, start_date, due_date, finished, budget } = this.state.projects
 
-    // const id = this.props.pm.map(pm => pm.material_id)
-    const prices = this.state.projectMaterials.map(material => {
-      // if(material.id === id){
-      //   console.log(material.id, id);
-        return material.price
-       // }
-    })
-    const total = prices.reduce((a,b) => a+b, 0)
-    // const id = this.props.projectMaterials.map(material => material.id)
+    const prices = this.state.projectMaterials.map(material => material.price)
 
-    // console.log(prices);
+    const total = prices.reduce((a,b) => a+b, 0)
+
     const { projectId, projectMaterials } = this.props
+
     const filteredMaterials = this.state.projectMaterials.filter(material =>{
-      // console.log(material.label);
       return material.label.toLowerCase().includes(this.state.search.toLowerCase())
     })
 
-
-      // if(project.id === this.props.slug){
-        console.log("OKAY");
         return (
           <div key={id}>
               <Header inverted color='grey' textAlign='center' as='h1'>{title}
-                <Title id={id} title={title} fetchProjects={this.props.fetchProjects}/>
+                <Title id={this.state.id} title={title} fetchProjects={this.fetchProjects}/>
               </Header>
-              <Header  inverted color='grey' textAlign='center' as="h3">Summary: {details}<ProjectDeets id={id} details={details} fetchProjects={this.props.fetchProjects}/></Header>
+              <Header  inverted color='grey' textAlign='center' as="h3">Summary: {details}<ProjectDeets id={this.state.id} details={details} fetchProjects={this.fetchProjects}/></Header>
 
             <Grid padded>
               <Grid.Row>
                 <Grid.Column width={6} floated='left'>Date Started: {start_date}
-                  <StartDate id={id} start_date={start_date} fetchProjects={this.props.fetchProjects}/>
+                  <StartDate id={id} start_date={start_date} fetchProjects={this.fetchProjects}/>
                 </Grid.Column>
 
                 <Grid.Column width={5}>
-                  <Finished projectId={id} finished={finished} fetchProjects={this.props.fetchProjects}/>
+                  <Finished projectId={id} finished={finished} fetchProjects={this.fetchProjects}/>
                 </Grid.Column>
 
                 <Grid.Column width={3} floated='right'>Date Due: {due_date}
-                  <DueDate id={id} due_date={due_date} fetchProjects={this.props.fetchProjects}/>
+                  <DueDate id={id} due_date={due_date} fetchProjects={this.fetchProjects}/>
                 </Grid.Column>
               </Grid.Row>
               <Grid.Column width={6} floated='left'>Budget: ${budget}
-                <Budget id={id} budget={budget} fetchProjects={this.props.fetchProjects}/>
+                <Budget id={id} budget={budget} fetchProjects={this.fetchProjects}/>
               </Grid.Column>
 
               <Grid.Column width={3} floated='right'>Remaining Budget: ${budget - (total )}</Grid.Column>
@@ -95,48 +163,37 @@ class Show extends Component {
 
               <Grid padded>
                 <Grid.Column floated='left' width={5}>
-                  <Notes notes={this.state.notes} fetchNotes={this.props.fetchNotes} deleteNote={this.props.deleteNote} projectId={projectId}/>
+                  <Notes notes={this.state.notes} fetchNotes={this.fetchNotes} deleteNote={this.deleteNote} projectId={this.state.id}/>
                 </Grid.Column>
 
                 <Grid.Column  width={6}>
-                  <ToDo fetchToDoList={this.props.fetchToDoList} toDoList={this.state.toDoList} projectId={projectId} deleteToDo={this.props.deleteToDo}/>
+                  <ToDo fetchToDoList={this.fetchToDoList} toDoList={this.state.toDoList} projectId={this.state.id} deleteToDo={this.deleteToDo}/>
                 </Grid.Column>
                 <Grid.Column floated="right" width={5}>
                   <ProjectMaterials
-                    id={id}
+                    id={this.state.id}
                     materials={filteredMaterials}
                     handleSearch={this.handleSearch}
                     allMaterials={this.props.materials}
-                    fetchProjectMaterials={this.props.fetchProjectMaterials}
-                    addProjectMaterial={this.props.addProjectMaterial}
-                    deleteMaterial={this.props.deleteProjectMaterials}
-                    pm={this.props.pm}/>
+                    fetchProjectMaterials={this.fetchProjectMaterials}
+                    addProjectMaterial={this.addProjectMaterial}
+                    deleteMaterial={this.deleteProjectMaterials}
+                    fetchPM={this.fetchPM}
+                    pm={this.state.pm}/>
                 </Grid.Column>
               </Grid>
               <Grid>
                 <Grid.Column  width={7}>
-                  <ResearchImages fetchResearchImages={this.props.fetchResearchImages} researches={this.state.researches} projectId={projectId} deleteResearch={this.props.deleteResearch}/>
+                  <ResearchImages fetchResearchImages={this.fetchResearchImages} researches={this.state.researches} projectId={this.state.id} deleteResearch={this.deleteResearch}/>
                 </Grid.Column>
                 <Grid.Column floated="right" width={7}>
-                  <ProcessPics fetchToDoList={this.props.fetchToDoList} toDoList={this.state.toDoList} projectId={projectId} />
+                  <ProcessPics fetchToDoList={this.fetchToDoList} toDoList={this.state.toDoList} projectId={projectId} />
                 </Grid.Column>
               </Grid>
               <Button onClick={()=> this.props.deleteProject(id)}>Delete Project</Button>
             </div>
       )
-      // else {
-        // return this.props.history.push("home")
-      // }
-
   }
 }
 
 export default withRouter(Show)
-
-
-
-
-
-
-
-// <Finished id={project.id} fetchProjects={this.props.fetchProjects} finished={project.finished}/>

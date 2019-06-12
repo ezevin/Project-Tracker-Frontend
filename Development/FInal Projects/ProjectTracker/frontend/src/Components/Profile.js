@@ -14,8 +14,8 @@ class Profile extends Component {
     const { username, name, age, about_me, profile_picture, id } = this.props.user
       return (
         <div>
-        <center className="textMedium">{username}'s Profile</center>
-        <ProfilePic id={id} fetchUserData={this.props.fetchUserData}/><Card><Image src={profile_picture} image={profile_picture}/></Card>
+        <center className="textMedium"><h1>{username}'s Profile</h1></center>
+        <ProfilePic id={id} fetchUserData={this.props.fetchUserData}/><Image size="medium" circular src={profile_picture} image={profile_picture}/>
         <span className="color"><Name id={id} fetchUserData={this.props.fetchUserData} name={name}/>Name: {name}</span><br /><br />
         <span className="color"><Age id={id} fetchUserData={this.props.fetchUserData} age={age}/>Age: {age} </span><br /><br />
         <span className="color"><AboutMe id={id} fetchUserData={this.props.fetchUserData} about_me={about_me}/>About Me: "{about_me}"</span><br /><br />

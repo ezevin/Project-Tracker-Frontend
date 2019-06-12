@@ -4,16 +4,26 @@ import { Icon, Grid, Container } from 'semantic-ui-react'
 import AddProcess from '../Forms/AddProcess'
 
 class ItemList extends Component {
+  state = {
+    done: false
+  }
+
+  toggleState = () => {
+
+
+
+  }
 
   render (){
 
-      const todoClass = this.props.complete ?
-          "done" : "undone";
+      const item = this.props.list.find(item => item.id === this.props.id)
+      console.log(this.props.complete);
+      const todoClass = item.complete ? "done" : "undone"
 
       return(
         <>
         <Container>
-         <Grid className={todoClass}>
+        <Grid  className={this.props.complete ? "done" : "undone"} >
           <Grid.Column width={2}>
             <Icon name="check" onClick={()=> this.props.handleDone(this.props.id)}/>
           </Grid.Column>

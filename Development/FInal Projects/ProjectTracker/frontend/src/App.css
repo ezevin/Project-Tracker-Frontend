@@ -54,3 +54,7 @@
 .scroll {
   overflow-y: scroll;
 }
+
+.gallerycard {
+  object-fit: cover;
+}

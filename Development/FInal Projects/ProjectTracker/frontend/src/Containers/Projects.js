@@ -69,10 +69,6 @@ class Projects extends Component {
                 <span className="color">Project Name:          </span>
                 <input  type="radio" value="Name" checked={value === 'Name'} onChange={this.props.titles}/>
             </Grid.Column>
-            <Grid.Column width={8}>
-                <span className="color">Due Date:          </span>
-                <input type="radio" value="DueDate" checked={value === 'DueDate'} onChange={this.props.dates}/>
-            </Grid.Column>
             </Grid>
             <Container align="center">
               <Grid>
@@ -105,3 +101,8 @@ class Projects extends Component {
 
 
 export default withRouter(Projects)
+
+// <Grid.Column width={8}>
+//     <span className="color">Due Date:          </span>
+//     <input type="radio" value="DueDate" checked={value === 'DueDate'} onChange={this.props.dates}/>
+// </Grid.Column>

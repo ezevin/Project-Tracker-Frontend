@@ -31,7 +31,8 @@ class App extends Component {
     allToDo: [],
     allNotes:[],
     um: [],
-    slug: ""
+    currentProject: [],
+    unfinished: []
   }
 
   componentDidMount(){
@@ -86,10 +87,11 @@ class App extends Component {
   /*               MENU BAR                */
   /******************************************/
   dropDown = (id) => {
+    this.props.history.push(`/show/${id}`)
     fetch(`http://localhost:3001/api/v1/projects/${id}`)
     .then(res => res.json())
-    .then(data => this.setState({projectMaterials: data.materials, pId: id, researches: data.researches, toDoList: data.to_do_lists, notes: data.notes}, console.log("PROJECT DATA", data.notes)))
-
+    .then(data => this.setState({projectMaterials: data.materials, pId: id, researches: data.researches, toDoList: data.to_do_lists, notes: data.notes}))
+    .then(this.props.history.push(`/show/${id}`))
   }
   /******************************************/
   /*                                        */
@@ -101,6 +103,8 @@ class App extends Component {
   handleUserLogin = (user) => {
     localStorage.setItem("token", user.id)
     this.setState({currentUser:user})
+      this.fetchUserData()
+      this.fetchProjects()
   }
 
   handleLogout = () => {
@@ -151,20 +155,13 @@ class App extends Component {
     this.setState({projects: this.state.projects.sort((a,b) =>{
       return a.title.localeCompare(b.title)})})
   }
-
-  handleDateSort = () => {
-    this.setState({projects: this.state.projects.sort((a,b)=>{
-      return b.due_date - a.due_date
-    })})
-  }
-
-  handleUnfinished = () => {
-    this.state.projects.filter(project => {
-      if(project.finished === false){
-      this.setState({unfinished: project})
-      }
-    })
-  }
+  //
+  // handleDateSort = () => {
+  //   this.setState({projects: this.state.projects.sort((a,b)=>{
+  //
+  //   console.log("Date", a.due_date)
+  // })})
+  // }
 
   /******************************************/
   /*                                        */
@@ -177,17 +174,13 @@ class App extends Component {
     this.setState({materials: [...this.state.materials, material]})
   }
 
-  addProjectMaterial = (projectmaterial) => {
-    this.setState({pm: [...this.state.pm, projectmaterial]})
-  }
-
   fetchMaterials = () => {
     let id = this.state.currentUser.id
     fetch(`http://localhost:3001/api/v1/users/${id}`)
     .then(res => res.json())
     .then(data => this.setState({materials: data.materials}, console.log("USER Materials", this.state.materials)))
   }
-  //
+
   deleteMaterial = (dmaterial) => {
     const deleted = this.state.materials.find(material => material.id === dmaterial)
     console.log("item", deleted.id);
@@ -196,113 +189,10 @@ class App extends Component {
     })
     .then(() =>this.fetchMaterials())
   }
-
-  fetchProjectMaterials = () => {
-    let id = this.state.pId
-
-    fetch(`http://localhost:3001/api/v1/projects/${id}`)
-    .then(res => res.json())
-    .then(data => this.setState({projectMaterials: data.materials}))
-    // .then(()=> this.fetchProjectMaterials())
-  }
-
-  deleteProjectMaterials = (pm) => {
-     const deleted = this.state.projectMaterials.find(material => material.id === pm)
-     console.log("pm", deleted, "project", this.state.pId, "join", this.state.pm);
-
-     this.state.pm.find(item => {
-       console.log("test 1", item.project_id,  this.state.pId);
-       console.log("test 2", item.material_id,  deleted.id);
-       if (item.project_id === this.state.pId && item.material_id === deleted.id){
-         fetch(`http://localhost:3001/api/v1/project_materials/${item.id}`, {
-           method: "delete"
-         })
-         .then(() =>this.fetchProjectMaterials())
-       }
-     })
-
-  }
-
   /******************************************/
   /*                                        */
   /******************************************/
 
-  /******************************************/
-  /*           Research Images              */
-  /******************************************/
-
-  fetchResearchImages = () => {
-    let id = this.state.pId
-
-    fetch(`http://localhost:3001/api/v1/projects/${id}`)
-    .then(res => res.json())
-    .then(data => this.setState({researches: data.researches}))
-  }
-
-  deleteResearch = (item) => {
-    console.log("???", item);
-    const deleted = this.state.researches.find(research => research.id === item)
-    console.log("item", deleted);
-    fetch(`http://localhost:3001/api/v1/researches/${deleted.id}`, {
-      method:"delete"
-    })
-    .then(() =>this.fetchResearchImages())
-  }
-
-  /******************************************/
-  /*                                        */
-  /******************************************/
-  /******************************************/
-  /*             To Do Lists                */
-  /******************************************/
-
-  fetchToDoList = () => {
-    let id = this.state.pId
-
-    fetch(`http://localhost:3001/api/v1/projects/${id}`)
-    .then(res => res.json())
-    .then(data => this.setState({toDoList: data.to_do_lists}))
-  }
-
-  deleteToDo = (item) => {
-    console.log("???", item);
-    const deleted = this.state.toDoList.find(list => list.id === item)
-    console.log("item", deleted);
-    fetch(`http://localhost:3001/api/v1/to_do_lists/${deleted.id}`, {
-      method:"delete"
-    })
-    .then(() =>this.fetchToDoList())
-  }
-
-  /******************************************/
-  /*                                        */
-  /******************************************/
-
-  /******************************************/
-  /*                 NOTES                  */
-  /******************************************/
-
-  fetchNotes = () => {
-    let id = this.state.pId
-
-    fetch(`http://localhost:3001/api/v1/projects/${id}`)
-    .then(res => res.json())
-    .then(data => this.setState({notes: data.notes}))
-  }
-
-  deleteNote = (item) => {
-    console.log("???", item);
-    const deleted = this.state.notes.find(note => note.id === item)
-    console.log("item", deleted);
-    fetch(`http://localhost:3001/api/v1/notes/${deleted.id}`, {
-      method:"delete"
-    })
-    .then(() =>this.fetchNotes())
-  }
-
-  /******************************************/
-  /*                                        */
-  /******************************************/
   render (){
 
     const unfinished = this.state.projects.filter(project => {
@@ -310,12 +200,12 @@ class App extends Component {
       return project
       }
     })
+
     const finished = this.state.projects.filter(project => {
       if(project.finished){
       return project
       }
     })
-
 
     return (
       <>
@@ -355,19 +245,13 @@ class App extends Component {
                fetchResearchImages={this.fetchResearchImages}
                researches={this.state.researches}
                deleteResearch={this.deleteResearch}
-               fetchToDoList={this.fetchToDoList}
-               toDoList={this.state.toDoList}
-               deleteToDo={this.deleteToDo}
-               fetchNotes={this.fetchNotes}
-               notes={this.state.notes}
-               deleteNote={this.deleteNote}
                pm={this.state.pm}
+               userId={this.state.id}
                />}}
                />
           <Route path="/profile" render={() => {
             return <Profile currentUser={this.state.currentUser} fetchUserData={this.fetchUserData} user={this.state.user} />}} />
           </Switch>
-          <Footer />
       </>
     );
   }

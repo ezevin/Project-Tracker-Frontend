@@ -35,10 +35,9 @@ class ProjectMaterials extends Component {
       .then(res=>{res.json()})
       .then(data => {this.props.addProjectMaterial(data)})
       .then(()=>this.props.fetchProjectMaterials())
+      .then(()=>this.props.fetchPM())
 
       this.setState({isOpen: false})
-
-
   }
 
   handleQuantity = () => {
@@ -49,11 +48,20 @@ class ProjectMaterials extends Component {
 
   render (){
 
-    const form = this.props.allMaterials.map(material => {
-      return  (<List>
-        <Button key={material.id} onClick={()=>this.handleClick(material.id)}>{material.label} ${material.price} ({material.quantity})</Button>
-        </List>)
-      })
+    const id = this.props.materials.map(material => material.id)
+
+    const filtered = this.props.allMaterials.filter(material => {
+     if(!id.includes(material.id)){
+       return material
+     }
+    })
+
+    const form = filtered.map(material => {
+      return  (
+                <List>
+                  <Button key={material.id} onClick={()=>this.handleClick(material.id)}>{material.label} ${material.price} ({material.quantity})</Button>
+                </List>)
+              })
 
     return (
       <>
@@ -71,9 +79,10 @@ class ProjectMaterials extends Component {
             key={material.id}
             label={material.label}
             price={material.price}
-            quantity={material.quantity}
+            // quantity={material.quantity}
             description={material.description}
             id={material.id}
+            fetchpm={this.props.fetchPM}
             image_url={material.image_url}
             place_purchased={material.place_purchased}
             deleteMaterial={this.props.deleteMaterial}

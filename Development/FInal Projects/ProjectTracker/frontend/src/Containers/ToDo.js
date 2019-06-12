@@ -12,10 +12,9 @@ class ToDo extends Component {
   }
 
   handleChange = (e) => {
-    // console.log(e.target.value);
     this.setState({item: e.target.value})
   }
-  //
+
   handleSubmit = (e) => {
     e.preventDefault()
     e.target.reset();
@@ -36,7 +35,6 @@ class ToDo extends Component {
   }
 
   handleDone = (id) => {
-    console.log("complete", id);
     fetch(`http://localhost:3001/api/v1/to_do_lists/${id}`, {
           method: "PATCH",
           headers: {
@@ -51,7 +49,6 @@ class ToDo extends Component {
   }
 
   render(){
-
 
     return(
       <>
@@ -79,7 +76,7 @@ class ToDo extends Component {
         </Grid>
         <Grid columns={5} padded className="link cards ">
           {this.props.toDoList.map(list =>(
-             <><ItemList key={list.id} list={list}
+             <><ItemList key={list.id} list={this.props.toDoList}
               fetchToDoList={this.props.fetchToDoList} toDoList={this.props.toDoList} id={list.id} complete={list.complete} item={list.item} deleteToDo={this.props.deleteToDo} handleDone={this.handleDone} pics={list.process_pic}/><br /></>
           ))}
         </Grid>

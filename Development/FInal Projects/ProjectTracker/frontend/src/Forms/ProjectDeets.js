@@ -22,7 +22,6 @@ class ProjectDeets
   }
 
   handleChange = (e) => {
-    console.log(e.target.value);
     this.setState({details: e.target.value})
   }
 

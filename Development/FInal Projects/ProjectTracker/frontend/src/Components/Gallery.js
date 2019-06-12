@@ -34,7 +34,7 @@ componentDidMount(){
 
   render(){
 
-    const trigger = <Card color='teal' fluid>
+    const trigger = <Card  className="gallerycard" wrapped ui={false}  color='teal' rounded fluid>
                       <Image src={this.props.finished_image}  size='medium'/>
                     </Card>
 
