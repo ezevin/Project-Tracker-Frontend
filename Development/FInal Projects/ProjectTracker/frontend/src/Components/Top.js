@@ -1,22 +1,32 @@
 import React, { Component } from 'react';
-import { Header, Menu, Dropdown } from 'semantic-ui-react'
+import { Menu, Dropdown } from 'semantic-ui-react'
 import { Link, withRouter } from 'react-router-dom'
 
 
 
 class Top extends Component {
+  state = {
+    id: ""
+  }
+
+  fetchProjects = () => {
+    fetch(`http://localhost:3001/api/v1/projects/${this.state.id}`)
+    .then(res => res.json())
+    .then(data => this.setState({projects: data}))
+    this.props.history.push(`/show/${this.state.id}`)
+  }
 
   dropDown = (id) => {
-    // this.props.history.push(`/show/${id}`)
     fetch(`http://localhost:3001/api/v1/projects/${id}`)
     .then(res => res.json())
-    .then(data => this.setState({projectMaterials: data.materials, pId: id, researches: data.researches, toDoList: data.to_do_lists, notes: data.notes}))
-    // .then(this.props.history.push(`/show/${id}`))
+    .then(data => this.setState({projects: data}))
+    this.props.history.push(`/show/${this.state.id}`)
   }
 
   render(){
+    console.log(this.state.id);
     return (
-      <div><br />
+      <div>
        <Menu >
         <Link to="/home" >
           <Menu.Item name='home'>
@@ -26,17 +36,16 @@ class Top extends Component {
 
         <Link to={`/gallery/${this.props.id}`}>
           <Menu.Item name='gallery' >
-              Gallery
+            Gallery
           </Menu.Item>
         </Link>
-
 
           <Menu.Item name='current projects'>
             <Dropdown item text='Current Projects'>
               <Dropdown.Menu>
                 {this.props.projects.map(project => (
-                  <Link to={`/show/${project.id}`}>
-                    <Dropdown.Item onClick={()=>this.dropDown(project.id)}>{project.title}</Dropdown.Item>
+                  <Link key={project.id} to={`/show/${project.id}`} onClick={()=>this.dropDown(project.id)}>
+                    <Dropdown.Item key={project.id}>{project.title}</Dropdown.Item>
                   </Link>
                 ))}
               </Dropdown.Menu>
@@ -70,7 +79,7 @@ class Top extends Component {
                 float='right'
                 name='logout'
                 onClick={this.props.handleLogout}>
-                Logout
+                <span>Logout</span>
               </Menu.Item>
               :
               <Menu.Item

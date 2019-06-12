@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-// import { Route } from 'react-router-dom'
-import { Grid } from 'semantic-ui-react'
+import { withRouter } from 'react-router-dom'
+import { Grid, Container } from 'semantic-ui-react'
 
 import Projects from './Projects'
 import MainGallery from './MainGallery'
@@ -16,17 +16,22 @@ class Main extends Component {
   }
 
   componentDidMount() {
-  fetch('http://localhost:3001/api/v1/researches')
-  .then(res => res.json())
-  .then(data => this.setState({allResearch: data}))
+    const token = localStorage.getItem("token")
+    if(!token){
+      this.props.history.push('login')
+    }else {
+      fetch('http://localhost:3001/api/v1/researches')
+      .then(res => res.json())
+      .then(data => this.setState({allResearch: data}))
 
-  fetch('http://localhost:3001/api/v1/to_do_lists')
-  .then(res => res.json())
-  .then(data => this.setState({allToDo: data}))
+      fetch('http://localhost:3001/api/v1/to_do_lists')
+      .then(res => res.json())
+      .then(data => this.setState({allToDo: data}))
 
-  fetch('http://localhost:3001/api/v1/notes')
-  .then(res => res.json())
-  .then(data => this.setState({allNotes: data}))
+      fetch('http://localhost:3001/api/v1/notes')
+      .then(res => res.json())
+      .then(data => this.setState({allNotes: data}))
+    }
   }
 
   handleSearch = (e, {value}) => {
@@ -39,6 +44,8 @@ class Main extends Component {
     console.log(value)
   }
 
+
+
   render(){
 
     const filteredMaterials = this.props.materials.filter(material =>{
@@ -50,13 +57,13 @@ class Main extends Component {
       return project.title.toLowerCase().includes(this.state.psearch.toLowerCase())
     })
 
-
     return (
       <>
         <br />
-        <Grid>
-          <Grid.Column floated='left' width={5}>
+        <Grid className="look container">
+          <Grid.Column className="look" floated='left' width={8}>
             <Projects
+              slug={this.props.slug}
               projects={filteredProjects}
               addProject={this.props.addProject}
               handleSearch={this.handlePSearch}
@@ -66,10 +73,7 @@ class Main extends Component {
               dropDown={this.props.dropDown}
             />
           </Grid.Column>
-          <Grid.Column  width={6}>
-            <MainGallery projects={this.props.finished} research={this.props.research} toDoList={this.props.toDoList} allNotes={this.props.allNotes}/>
-          </Grid.Column>
-          <Grid.Column floated="right" width={5}>
+          <Grid.Column floated="right" width={8}>
             <Materials materials={filteredMaterials}
              addMaterial={this.props.addMaterial}
              id={this.props.id}
@@ -80,9 +84,12 @@ class Main extends Component {
             />
           </Grid.Column>
         </Grid>
+        <Container className="look container">
+          <MainGallery projects={this.props.finished} research={this.props.research} toDoList={this.props.toDoList} allNotes={this.props.allNotes}/>
+        </Container>
       </>
     )
   }
 }
 
-export default Main
+export default withRouter(Main)

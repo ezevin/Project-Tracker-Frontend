@@ -9,7 +9,7 @@ import Signup from './Components/Signup'
 import FinishedPictures from './Containers/FinishedPictures'
 import Show from './Containers/Show'
 import Profile from './Components/Profile'
-import Footer from './Components/Footer'
+// import Footer from './Components/Footer'
 
 class App extends Component {
   state = {
@@ -20,7 +20,7 @@ class App extends Component {
     id: '',
     projectMaterials: [],
     pm: [],
-    allProjects: [],
+    // allProjects: [],
     users: [],
     materialsInUse: [],
     user: [],
@@ -38,7 +38,7 @@ class App extends Component {
   componentDidMount(){
 
     const token = localStorage.getItem('token')
-    // console.log("token is", token);
+    console.log("token is", token);
     if(token){
       fetch('http://localhost:3001/api/v1/current_user', {
         headers: {
@@ -53,18 +53,21 @@ class App extends Component {
         let id = this.state.currentUser.id
         fetch(`http://localhost:3001/api/v1/users/${id}`)
         .then(res => res.json())
-        .then(data => this.setState({projects: data.projects, materials: data.materials, user: data}, console.log("USER ", data.projects)))
+        .then(data => this.setState({projects: data.projects, materials: data.materials, user: data, um: data.user_materials}, console.log("USER ", data, data.projects)))
         this.setState({id: id})
       })
     }
 
-    fetch(`http://localhost:3001/api/v1/projects`)
-    .then(res => res.json())
-    .then(data => this.setState({allProjects: data}, console.log("PROJECTS", data)))
-
     fetch('http://localhost:3001/api/v1/project_materials')
     .then(res => res.json())
     .then(data => this.setState({pm: data},console.log("PM", data)))
+    // fetch(`http://localhost:3001/api/v1/projects`)
+    // .then(res => res.json())
+    // .then(data => this.setState({allProjects: data}, console.log("PROJECTS", data)))
+
+    // fetch('http://localhost:3001/api/v1/user_materials')
+    // .then(res => res.json())
+    // .then(data => this.setState({um: data}, console.log("UM", data)))
 
     // fetch('http://localhost:3001/api/v1/researches')
     // .then(res => res.json())
@@ -77,10 +80,6 @@ class App extends Component {
     // fetch('http://localhost:3001/api/v1/notes')
     // .then(res => res.json())
     // .then(data => this.setState({allNotes: data},console.log("Notes", data)))
-
-    fetch('http://localhost:3001/api/v1/user_materials')
-    .then(res => res.json())
-    .then(data => this.setState({um: data}, console.log("UM", data)))
   }
 
   /******************************************/
@@ -88,10 +87,11 @@ class App extends Component {
   /******************************************/
   dropDown = (id) => {
     this.props.history.push(`/show/${id}`)
-    fetch(`http://localhost:3001/api/v1/projects/${id}`)
-    .then(res => res.json())
-    .then(data => this.setState({projectMaterials: data.materials, pId: id, researches: data.researches, toDoList: data.to_do_lists, notes: data.notes}))
-    .then(this.props.history.push(`/show/${id}`))
+    // fetch(`http://localhost:3001/api/v1/projects/${id}`)
+    // .then(res => res.json())
+    // .then(data => this.setState({projectMaterials: data.materials, pId: id, researches: data.researches, toDoList: data.to_do_lists, notes: data.notes}))
+    // .then(this.props.history.push(`/show/${id}`))
+    // this.fetchProjects()
   }
   /******************************************/
   /*                                        */
@@ -101,7 +101,8 @@ class App extends Component {
   /*        LOGIN/LOGOUT/USERINFO          */
   /******************************************/
   handleUserLogin = (user) => {
-    localStorage.setItem("token", user.id)
+    console.log("User response", user);
+    localStorage.setItem("token", user.token)
     this.setState({currentUser:user})
       this.fetchUserData()
       this.fetchProjects()
@@ -189,6 +190,7 @@ class App extends Component {
     })
     .then(() =>this.fetchMaterials())
   }
+
   /******************************************/
   /*                                        */
   /******************************************/
@@ -211,26 +213,29 @@ class App extends Component {
       <>
         <Top id={this.state.id} projects={unfinished} dropDown={this.dropDown} currentUser={this.state.currentUser} handleLogout={this.handleLogout}/><br />
         <Switch>
-          <Route path='/Home' render={()=><Main projects={unfinished}
-                                                finished={finished}
-                                                materials={this.state.materials}
-                                                addProject={this.addProject}
-                                                addMaterial={this.addMaterial}
-                                                deleteMaterial={this.deleteMaterial}
-                                                research={this.state.allResearch}
-                                                titles={this.handleTitleSort}
-                                                dates={this.handleDateSort}
-                                                id={this.state.id}
-                                                fetchMaterials={this.fetchMaterials}
-                                                dropDown={this.dropDown}
-                                                toDoList={this.state.allToDo}
-                                                allNotes={this.state.allNotes}
-                                                um={this.state.um}/>}/>
+          <Route path='/Home' render={(routerProps)=>{
+            const slug = routerProps.match.params.slug
+            return<Main slug={slug}
+                    projects={unfinished}
+                    finished={finished}
+                    materials={this.state.materials}
+                    addProject={this.addProject}
+                    addMaterial={this.addMaterial}
+                    deleteMaterial={this.deleteMaterial}
+                    research={this.state.allResearch}
+                    titles={this.handleTitleSort}
+                    dates={this.handleDateSort}
+                    id={this.state.id}
+                    fetchMaterials={this.fetchMaterials}
+                    dropDown={this.dropDown}
+                    toDoList={this.state.allToDo}
+                    allNotes={this.state.allNotes}
+                    um={this.state.um}/>}}/>
           <Route path="/login" render={() => {
             return <Login handleUserLogin={this.handleUserLogin } handleLogout={this.handleLogout} addUsers={this.addUsers} users={this.state.users} currentUser={this.props.currentUser}/>}}/>
             <Route path="/signup" render={() => {
               return <Signup handleUserLogin={this.handleUserLogin } handleLogout={this.handleLogout} addUsers={this.addUsers} users={this.state.users} currentUser={this.props.currentUser}/>}}/>
-          <Route path="/gallery/:slug" render={() => {
+          <Route path="/gallery/:slug" render={(routerProps) => {
             return <FinishedPictures projects={finished} research={this.state.allResearch} toDoList={this.state.allToDo}   allNotes={this.state.allNotes}/>}} />
           <Route path="/show/:slug" render={(routerProps) => {
             const slug = routerProps.match.params.slug
@@ -241,12 +246,13 @@ class App extends Component {
                projectMaterials={this.state.projectMaterials}
                fetchProjectMaterials={this.fetchProjectMaterials}
                addProjectMaterial={this.addProjectMaterial}
-               allProjects={this.state.allProjects}
+               allProjects={this.state.projects}
                fetchResearchImages={this.fetchResearchImages}
                researches={this.state.researches}
                deleteResearch={this.deleteResearch}
                pm={this.state.pm}
                userId={this.state.id}
+               handleAddMaterial={this.handleAddMaterial}
                />}}
                />
           <Route path="/profile" render={() => {

@@ -43,8 +43,9 @@ class Projects extends Component {
            })
         })
         .then(res=>res.json())
-        .then(data => {this.props.addProject(data)})
-        // .then(data => this.props.history.push(`/show/${data.id}`))
+        .then(data => {
+          return this.props.addProject(data),
+          this.props.history.push(`/show/${data.id}`)})
         this.setState({isOpen: false})
   }
 
@@ -60,17 +61,12 @@ class Projects extends Component {
                 </Form>
 
     return(
-      <div>
+      <div className="shadow">
         <Header inverted color='grey' textAlign="center" as='h2'>Current Projects</Header>
           <center><Search width={15} onSearchChange={this.props.handleSearch} showNoResults={false} /></center><br />
-          <center><span>Search By:</span></center>
-            <Grid padded>
-            <Grid.Column width={7}>
-                <span className="color">Project Name:          </span>
-                <input  type="radio" value="Name" checked={value === 'Name'} onChange={this.props.titles}/>
-            </Grid.Column>
-            </Grid>
-            <Container align="center">
+          <center><span>Sort By Project Name:</span>
+                <input  type="radio" value="Name" checked={value === 'Name'} onChange={this.props.titles}/></center><br />
+            <center><Container align="center">
               <Grid>
                 <Grid.Column width={6}>
                   <span>Project Name:</span>
@@ -79,13 +75,15 @@ class Projects extends Component {
                   <span>Due Date:</span>
                 </Grid.Column>
               </Grid>
-            </Container>
+            </Container></center>
+        <div className="projects">
         {this.props.projects.map(project =>(
           <Link to={`/show/${project.id}`} key={project.id} onClick={()=>this.props.dropDown(project.id)}>
           <ProjectList key={project.id} project={project.title} dueDate={project.due_date} id={project.id} dropDown={this.props.dropDown} projects={this.props.projects}/>
           </Link>
           ))
         }
+        </div>
         <br /><center><Popup trigger={<Button content='Start A New Project' />}
                   content={form}
                   on='click'

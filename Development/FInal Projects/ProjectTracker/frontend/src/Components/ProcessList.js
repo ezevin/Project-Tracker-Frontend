@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Image, Modal, Card, Button } from 'semantic-ui-react'
+import { Image, Modal, Card, Button, Header } from 'semantic-ui-react'
 
 
 
@@ -17,8 +17,9 @@ class ProcessList extends Component {
           <center>
               <Card>
                 <Image wrapped size='medium' src={this.props.photo} />
+                <Header>{this.props.title}</Header>
               </Card>
-              <Button circular onClick={()=> this.props.deleteResearch(this.props.id)}>Delete</Button>
+              <Button circular onClick={()=> this.props.reset(this.props.id)}>Delete</Button>
             </center>
           </Modal><br />
         </>

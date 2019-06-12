@@ -77,37 +77,40 @@ class Materials extends Component {
                 </Form>
 
     return (
-      <>
+      <div className="shadow">
         <Header inverted color='grey' textAlign="center" as='h2'>Inventory</Header>
         <center><Search width={15} onSearchChange={this.props.handleSearch} showNoResults={false} /></center><br />
-        <Grid>
-          <Grid.Column width={3}><span>Item:</span></Grid.Column>
-          <Grid.Column width={3}><span>Price:</span></Grid.Column>
-          <Grid.Column width={3}><span>Quantity:</span></Grid.Column>
-          <Grid.Column width={3}></Grid.Column>
-          <Grid.Column width={3}></Grid.Column>
-        </Grid>
-        <Container className="scroll">
-        {this.props.materials.map(material => (
-          <MaterialsList
-            key={material.id}
-            materials={material}
-            label={material.label}
-            price={material.price}
-            description={material.description}
-            id={material.id}
-            image_url={material.image_url} place_purchased={material.place_purchased} deleteMaterial={this.props.deleteMaterial}
-            fetchMaterials={this.props.fetchMaterials} um={this.props.um}/>
-        ))}</Container><br />
-        <center><center><Popup trigger={<Button content='Add A New Material' />}
+        <div className="inventory">
+          <Grid>
+            <Grid.Column width={3}><span>Item:</span></Grid.Column>
+            <Grid.Column width={3}><span>Price:</span></Grid.Column>
+            <Grid.Column width={3}><span>Quantity:</span></Grid.Column>
+            <Grid.Column width={3}></Grid.Column>
+            <Grid.Column width={3}></Grid.Column>
+          </Grid>
+          <Container className="scroll">
+          {this.props.materials.map(material => (
+            <MaterialsList
+              key={material.id}
+              materials={material}
+              label={material.label}
+              price={material.price}
+              description={material.description}
+              id={material.id}
+              image_url={material.image_url} place_purchased={material.place_purchased} deleteMaterial={this.props.deleteMaterial}
+              fetchMaterials={this.props.fetchMaterials} um={this.props.um}/>
+          ))}</Container>
+        </div>
+        <br /><br />
+        <center><Popup trigger={<Button content='Add A New Material' />}
                   content={form}
                   on='click'
                   position='bottom right'
                   open={this.state.isOpen}
                   onOpen={this.handleOpen}
                   onClose={this.handleClose}
-                  /></center></center>
-      </>
+                  /></center>
+      </div>
     )
   }
 }

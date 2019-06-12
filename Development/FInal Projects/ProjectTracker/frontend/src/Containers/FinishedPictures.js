@@ -24,6 +24,13 @@ class FinishedPictures extends Component {
     //   }
     // })
     // console.log(this.props);
+    // const date = this.props.projects.map(project => project.updated_at.split("").splice(0, 10).join())
+    //
+    // const test = date.map(day => day[0, 2])
+    // const month = this.props.projects.map(project => project.updated_at.split("").splice(5, 7).join())
+    // const year = this.props.projects.map(project => project.updated_at.split("").splice(0, 4).join())
+    // // const sorted = date.map(date )
+    // console.log(test);
     return(
       <>
         <Grid >

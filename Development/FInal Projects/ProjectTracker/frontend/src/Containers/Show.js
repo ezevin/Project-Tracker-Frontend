@@ -28,13 +28,18 @@ class Show extends Component {
   }
 
   componentDidMount(){
-    fetch(`http://localhost:3001/api/v1/projects/${this.props.slug}`)
-    .then(res => res.json())
-    .then(data => this.setState({projects: data, researches: data.researches, toDoList: data.to_do_lists, projectMaterials: data.materials, notes: data.notes, id: data.id}))
+    const token = localStorage.getItem("token")
+    if(!token){
+      this.props.history.push('login')
+    }else {
+      fetch(`http://localhost:3001/api/v1/projects/${this.props.slug}`)
+      .then(res => res.json())
+      .then(data => this.setState({projects: data, researches: data.researches, toDoList: data.to_do_lists, projectMaterials: data.materials, notes: data.notes, id: data.id}, console.log("All", data)))
 
-    fetch('http://localhost:3001/api/v1/project_materials')
-    .then(res => res.json())
-    .then(data => this.setState({pm: data},console.log("PM", data)))
+      fetch('http://localhost:3001/api/v1/project_materials')
+      .then(res => res.json())
+      .then(data => this.setState({pm: data},console.log("PM", data)))
+    }
   }
 
   fetchProjects = () => {
@@ -124,14 +129,14 @@ class Show extends Component {
 
     const total = prices.reduce((a,b) => a+b, 0)
 
-    const { projectId, projectMaterials } = this.props
+    const { projectId } = this.props
 
     const filteredMaterials = this.state.projectMaterials.filter(material =>{
       return material.label.toLowerCase().includes(this.state.search.toLowerCase())
     })
 
         return (
-          <div key={id}>
+          <div>
               <Header inverted color='grey' textAlign='center' as='h1'>{title}
                 <Title id={this.state.id} title={title} fetchProjects={this.fetchProjects}/>
               </Header>
@@ -166,7 +171,7 @@ class Show extends Component {
                   <Notes notes={this.state.notes} fetchNotes={this.fetchNotes} deleteNote={this.deleteNote} projectId={this.state.id}/>
                 </Grid.Column>
 
-                <Grid.Column  width={6}>
+                <Grid.Column width={6}>
                   <ToDo fetchToDoList={this.fetchToDoList} toDoList={this.state.toDoList} projectId={this.state.id} deleteToDo={this.deleteToDo}/>
                 </Grid.Column>
                 <Grid.Column floated="right" width={5}>
@@ -179,7 +184,8 @@ class Show extends Component {
                     addProjectMaterial={this.addProjectMaterial}
                     deleteMaterial={this.deleteProjectMaterials}
                     fetchPM={this.fetchPM}
-                    pm={this.state.pm}/>
+                    pm={this.state.pm}
+                    handleAddMaterial={this.props.handleAddMaterial}/>
                 </Grid.Column>
               </Grid>
               <Grid>

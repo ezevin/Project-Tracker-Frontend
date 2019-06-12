@@ -23,7 +23,7 @@ class Quantity extends Component {
   handleSubmit = (e) => {
     e.preventDefault()
     const { quantity } = this.state
-    fetch(`http://localhost:3001/api/v1/user_materials/${this.props.id}`, {
+    fetch(`http://localhost:3001/api/v1/materials/${this.props.id}`, {
           method: "PATCH",
           headers: {
             Accept: 'application/json',
@@ -32,7 +32,7 @@ class Quantity extends Component {
           body: JSON.stringify({ quantity })
         })
         .then(res=>res.json())
-        .then(data => {this.setState(data)})
+        .then(data => {console.log("WHAT?", data)})
         .then(()=> this.props.fetchMaterials())
         this.setState({isOpen: false})
   }

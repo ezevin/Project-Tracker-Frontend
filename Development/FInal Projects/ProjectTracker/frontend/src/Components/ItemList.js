@@ -16,9 +16,9 @@ class ItemList extends Component {
 
   render (){
 
-      const item = this.props.list.find(item => item.id === this.props.id)
-      console.log(this.props.complete);
-      const todoClass = item.complete ? "done" : "undone"
+      // const item = this.props.list.find(item => item.id === this.props.id)
+      // console.log(this.props.complete);
+      // const todoClass = item.complete ? "done" : "undone"
 
       return(
         <>

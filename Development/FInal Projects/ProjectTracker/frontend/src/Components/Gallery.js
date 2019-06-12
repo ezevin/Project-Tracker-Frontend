@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { withRouter } from 'react-router-dom'
 import { Image, Modal, Header, Card, Button, Icon } from 'semantic-ui-react'
 
 class Gallery extends Component {
@@ -11,17 +12,22 @@ class Gallery extends Component {
   }
 
 componentDidMount(){
-  fetch('http://localhost:3001/api/v1/researches')
-  .then(res => res.json())
-  .then(data => this.setState({research: data}))
+  const token = localStorage.getItem("token")
+  if(!token){
+    this.props.history.push('login')
+  }else {
+    fetch('http://localhost:3001/api/v1/researches')
+    .then(res => res.json())
+    .then(data => this.setState({research: data}))
 
-  fetch('http://localhost:3001/api/v1/to_do_lists')
-  .then(res => res.json())
-  .then(data => this.setState({toDoList: data}))
+    fetch('http://localhost:3001/api/v1/to_do_lists')
+    .then(res => res.json())
+    .then(data => this.setState({toDoList: data}))
 
-  fetch('http://localhost:3001/api/v1/notes')
-  .then(res => res.json())
-  .then(data => this.setState({notes: data}))
+    fetch('http://localhost:3001/api/v1/notes')
+    .then(res => res.json())
+    .then(data => this.setState({notes: data}))
+  }
 }
 
   handleOpen = () => {
@@ -34,9 +40,9 @@ componentDidMount(){
 
   render(){
 
-    const trigger = <Card  className="gallerycard" wrapped ui={false}  color='teal' rounded fluid>
+    const trigger = <div className="card"><Card  className="gallerycard" color='teal' fluid>
                       <Image src={this.props.finished_image}  size='medium'/>
-                    </Card>
+                    </Card></div>
 
     const research = this.state.research.filter(research => {
       if(research.project_id === this.props.projectId){
@@ -83,10 +89,10 @@ componentDidMount(){
                            </Modal>
 
       return(
-        <>
+        <div>
           <Modal trigger={trigger}>
             <Modal.Content image>
-              <Image wrapped size='medium' src={this.props.photo} />
+              <Image  wrapped size='medium' src={this.props.photo} />
               <Modal.Description>
                 <Header>{this.props.title}</Header>
                   <Header className="scroll" as="h4">Project Notes: {notes.map(note => note.note)}</Header>
@@ -98,9 +104,9 @@ componentDidMount(){
               {processCard}
             </Modal.Actions>
           </Modal><br />
-        </>
+        </div>
     )
   }
 }
 
-export default Gallery
+export default withRouter(Gallery)

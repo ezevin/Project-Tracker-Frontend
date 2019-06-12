@@ -10,9 +10,13 @@ class ProjectMaterials extends Component {
     user_id: "",
     isOpen: false,
     material_id: '',
-    all: []
+    all: [],
+    quantity: ''
   }
 
+  // componentDidMount(){
+  //   this.setState({quantity:})
+  // }
 
   handleOpen = () => {
     this.setState({isOpen: true})
@@ -41,9 +45,20 @@ class ProjectMaterials extends Component {
   }
 
   handleQuantity = () => {
-    fetch(`http://localhost:3001/api/v1/projects/${this.props.id}`)
+    fetch(`http://localhost:3001/api/v1/projects`)
     .then(res => res.json())
     .then(data => {console.log(data)})
+  }
+
+  handleAddMaterial = (id) => {
+    console.log("add", id);
+    fetch(`http://localhost:3001/api/v1/project_materials/${this.props.id}`)
+    .then(res => res.json())
+    .then(data => {console.log(data)})
+  }
+
+  handleSubtractMaterial = (id) => {
+    console.log("subtract", id);
   }
 
   render (){
@@ -87,7 +102,8 @@ class ProjectMaterials extends Component {
             place_purchased={material.place_purchased}
             deleteMaterial={this.props.deleteMaterial}
             fetchMaterials={this.props.fetchMaterials}
-            pm={this.props.pm}/>
+            pm={this.props.pm}
+            handleAddMaterial={this.handleAddMaterial}/>
         ))}<br />
         <center><center><Popup trigger={<Button content='Add A Material' />}
                   content={form}
