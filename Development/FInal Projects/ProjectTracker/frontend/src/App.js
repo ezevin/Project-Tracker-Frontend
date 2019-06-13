@@ -21,16 +21,7 @@ class App extends Component {
     projectMaterials: [],
     pm: [],
     users: [],
-    materialsInUse: [],
-    user: [],
-    research: [],
-    allResearch: [],
-    toDoList: [],
-    notes: [],
-    allToDo: [],
-    allNotes:[],
-    um: [],
-    currentProject: []
+    user: []
   }
 
   componentDidMount(){
@@ -51,7 +42,7 @@ class App extends Component {
         let id = this.state.currentUser.id
         fetch(`http://localhost:3001/api/v1/users/${id}`)
         .then(res => res.json())
-        .then(data => this.setState({projects: data.projects, materials: data.materials, user: data, um: data.user_materials}, console.log("USER ", data, data.projects)))
+        .then(data => this.setState({projects: data.projects, materials: data.materials, user: data}, console.log("USER ", data, data.projects)))
         this.setState({id: id})
       })
     }
@@ -59,9 +50,10 @@ class App extends Component {
     fetch('http://localhost:3001/api/v1/project_materials')
     .then(res => res.json())
     .then(data => this.setState({pm: data},console.log("PM", data)))
+
     // fetch(`http://localhost:3001/api/v1/projects`)
     // .then(res => res.json())
-    // .then(data => this.setState({allProjects: data}, console.log("PROJECTS", data)))
+    // .then(data => this.setState({projectMaterials: data.materials, research: data.researches, toDoList: data.to_do_lists, projectMaterials: data.materials, notes: data.notes}, console.log("PROJECTS", data)))
 
     // fetch('http://localhost:3001/api/v1/user_materials')
     // .then(res => res.json())
@@ -85,12 +77,8 @@ class App extends Component {
   /******************************************/
   dropDown = (id) => {
     this.props.history.push(`/show/${id}`)
-    this.setState({projects: []})
-    // fetch(`http://localhost:3001/api/v1/projects/${id}`)
-    // .then(res => res.json())
-    // .then(data => this.setState({projectMaterials: data.materials, pId: id, researches: data.researches, toDoList: data.to_do_lists, notes: data.notes}))
-    // .then(this.props.history.push(`/show/${id}`))
-    // this.fetchProjects()
+    this.fetchProjects()
+    window.location.reload()
   }
   /******************************************/
   /*                                        */
@@ -118,16 +106,7 @@ class App extends Component {
       projectMaterials: [],
       pm: [],
       users: [],
-      materialsInUse: [],
       user: [],
-      research: [],
-      allResearch: [],
-      toDoList: [],
-      notes: [],
-      allToDo: [],
-      allNotes:[],
-      um: [],
-      currentProject: []
     })
     this.props.history.push('login')
   }
@@ -214,8 +193,8 @@ class App extends Component {
   /******************************************/
 
   render (){
-    console.log("testing", this.state.materials);
 
+    console.log(this.state);
     const unfinished = this.state.projects.filter(project => {
       if(project.finished === false){
       return project
@@ -241,37 +220,35 @@ class App extends Component {
                     addProject={this.addProject}
                     addMaterial={this.addMaterial}
                     deleteMaterial={this.deleteMaterial}
-                    research={this.state.allResearch}
+                    // research={this.state.allResearch}
                     titles={this.handleTitleSort}
                     dates={this.handleDateSort}
                     id={this.state.id}
                     fetchMaterials={this.fetchMaterials}
                     dropDown={this.dropDown}
-                    toDoList={this.state.allToDo}
-                    allNotes={this.state.allNotes}
-                    um={this.state.um}/>}}/>
+                    research={this.state.research}
+                    toDoList={this.state.toDoList}
+                    notes={this.state.notes}
+                    // um={this.state.um}
+                    />}}/>
           <Route path="/login" render={() => {
             return <Login handleUserLogin={this.handleUserLogin } handleLogout={this.handleLogout} addUsers={this.addUsers} users={this.state.users} currentUser={this.props.currentUser}/>}}/>
             <Route path="/signup" render={() => {
               return <Signup handleUserLogin={this.handleUserLogin } handleLogout={this.handleLogout} addUsers={this.addUsers} users={this.state.users} currentUser={this.props.currentUser}/>}}/>
           <Route path="/gallery/:slug" render={(routerProps) => {
-            return <FinishedPictures projects={finished} research={this.state.allResearch} toDoList={this.state.allToDo}   allNotes={this.state.allNotes}/>}} />
+            return <FinishedPictures projects={finished} research={this.state.allResearch} toDoList={this.state.allToDo}   allNotes={this.state.allNotes}
+            />}} />
           <Route path="/show/:slug" render={(routerProps) => {
             const slug = routerProps.match.params.slug
               return <Show  slug={slug} projects={unfinished}
                finished={finished}
-               materials={this.state.materials} projectId={this.state.pId} fetchProjects={this.fetchProjects} deleteProject={this.deleteProject}
+               materials={this.state.materials} projectId={this.state.pID} fetchProjects={this.fetchProjects} deleteProject={this.deleteProject}
                deleteProjectMaterials={this.deleteProjectMaterials}
                projectMaterials={this.state.projectMaterials}
                fetchProjectMaterials={this.fetchProjectMaterials}
                addProjectMaterial={this.addProjectMaterial}
-               allProjects={this.state.projects}
-               fetchResearchImages={this.fetchResearchImages}
-               researches={this.state.researches}
-               deleteResearch={this.deleteResearch}
                pm={this.state.pm}
                userId={this.state.id}
-               handleAddMaterial={this.handleAddMaterial}
                />}}
                />
           <Route path="/profile" render={() => {

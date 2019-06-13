@@ -43,7 +43,7 @@ class Show extends Component {
   }
 
   fetchProjects = () => {
-    fetch(`http://localhost:3001/api/v1/projects/${this.state.id}`)
+    fetch(`http://localhost:3001/api/v1/projects/${this.props.id}`)
     .then(res => res.json())
     .then(data => this.setState({projects: data}))
   }
@@ -73,7 +73,7 @@ class Show extends Component {
          })
          .then(() =>this.fetchProjectMaterials())
        }})
-       
+
     const material = this.props.materials.filter(material => {
                         if (material.id === id){return material}
                       })
@@ -137,6 +137,7 @@ class Show extends Component {
   }
 
   render(){
+    console.log(this.props);
 
     const { id, title, details, start_date, due_date, finished, budget } = this.state.projects
 

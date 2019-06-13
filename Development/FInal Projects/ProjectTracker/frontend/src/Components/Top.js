@@ -6,18 +6,12 @@ import { Link, withRouter } from 'react-router-dom'
 
 class Top extends Component {
   state = {
-    id: ""
+    id: "",
+    page: false
   }
 
   fetchProjects = () => {
     fetch(`http://localhost:3001/api/v1/projects/${this.state.id}`)
-    .then(res => res.json())
-    .then(data => this.setState({projects: data}))
-    this.props.history.push(`/show/${this.state.id}`)
-  }
-
-  dropDown = (id) => {
-    fetch(`http://localhost:3001/api/v1/projects/${id}`)
     .then(res => res.json())
     .then(data => this.setState({projects: data}))
     this.props.history.push(`/show/${this.state.id}`)
@@ -44,8 +38,8 @@ class Top extends Component {
             <Dropdown item text='Current Projects'>
               <Dropdown.Menu>
                 {this.props.projects.map(project => (
-                  <Link key={project.id} to={`/show/${project.id}`} onClick={()=>this.props.dropDown(project.id)}>
-                    <Dropdown.Item key={project.id}>{project.title}</Dropdown.Item>
+                  <Link key={project.id}  refresh="true" to={`/show/${project.id}`}>
+                    <Dropdown.Item key={project.id} onClick={()=>this.props.dropDown(project.id)}>{project.title}</Dropdown.Item>
                   </Link>
                 ))}
               </Dropdown.Menu>
