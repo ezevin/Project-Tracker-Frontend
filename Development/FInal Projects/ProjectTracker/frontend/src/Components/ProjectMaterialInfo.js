@@ -15,7 +15,7 @@ class ProjectMaterialInfo extends Component {
           src={this.props.image_url}>
         </Image>
         <Header as="h4">Price:{this.props.price}</Header>
-        <Header as="h4">Quantity:{this.props.quantity}</Header>
+        // <Header as="h4">Quantity:{this.props.quantity}</Header>
         <Header as="h4">Details: {this.props.description}</Header>
         <Header as="h4">Place Purchased: {this.props.place_purchased}</Header>
       </Modal>

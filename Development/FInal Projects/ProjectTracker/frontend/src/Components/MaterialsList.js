@@ -10,16 +10,16 @@ class MaterialsList extends Component {
   }
 
   componentDidMount(){
-    fetch('http://localhost:3001/api/v1/user_materials')
-    .then(res => res.json())
-    .then(data => this.setState({um: data}))
+    // fetch('http://localhost:3001/api/v1/user_materials')
+    // .then(res => res.json())
+    // .then(data => this.setState({um: data}))
   }
 
   render(){
-    const quantity = this.state.um.map(um => {
-      if(um.material_id === this.props.id){
-        return um.quantity
-      }} )
+    // const quantity = this.state.um.map(um => {
+    //   if(um.material_id === this.props.id){
+    //     return um.quantity
+    //   }} )
 
     return (
       <Container>
@@ -36,7 +36,7 @@ class MaterialsList extends Component {
           </Grid.Column>
           <Grid.Column width={3}>
             <List >
-              <List.Item><h4>{quantity}</h4></List.Item>
+              <List.Item><h4>{this.props.quantity}</h4></List.Item>
             </List>
           </Grid.Column>
           <Grid.Column width={3}>
@@ -46,7 +46,7 @@ class MaterialsList extends Component {
                 materials={this.props.material}
                 label={this.props.label}
                 price={this.props.price}
-                quantity={quantity}
+                quantity={this.props.quantity}
                 description={this.props.description}
                 id={this.props.id}
                 image_url={this.props.image_url}
@@ -57,7 +57,7 @@ class MaterialsList extends Component {
           </Grid.Column>
           <Grid.Column width={3}>
             <List >
-              <List.Item><h4 onClick={()=> this.props.deleteMaterial(this.props.id)}>X</h4></List.Item>
+              <List.Item><h4 onClick={()=> this.props.deleteMaterial(this.props.id)}> X </h4></List.Item>
             </List>
           </Grid.Column>
         </Grid>

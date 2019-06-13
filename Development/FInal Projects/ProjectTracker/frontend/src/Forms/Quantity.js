@@ -32,7 +32,7 @@ class Quantity extends Component {
           body: JSON.stringify({ quantity })
         })
         .then(res=>res.json())
-        .then(data => {console.log("WHAT?", data)})
+        .then(data => {this.setState(data)})
         .then(()=> this.props.fetchMaterials())
         this.setState({isOpen: false})
   }

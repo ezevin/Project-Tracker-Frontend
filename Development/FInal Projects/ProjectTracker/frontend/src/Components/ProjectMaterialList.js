@@ -6,17 +6,6 @@ import ProjectMaterialInfo from './ProjectMaterialInfo'
 class ProjectMaterialList extends Component {
 
   render(){
-    const quantity = this.props.pm.map(pm => {
-      if(pm.material_id === this.props.id){
-        return pm.quantity
-      }
-    })
-
-    const id = this.props.pm.map(pm => {
-      if(pm.material_id === this.props.id){
-        return pm.id
-      }
-    })
 
     return (
       <Container>
@@ -29,11 +18,6 @@ class ProjectMaterialList extends Component {
           <Grid.Column width={3}>
             <List >
               <List.Item><h4>${this.props.price}</h4></List.Item>
-            </List>
-          </Grid.Column>
-          <Grid.Column width={4}>
-            <List >
-              <List.Item><h4><Icon onClick={()=>{console.log("minus", id)}} name="minus"/> {quantity} <Icon onClick={this.props.handleAddMaterial(id)} name="add"/></h4></List.Item>
             </List>
           </Grid.Column>
           <Grid.Column width={3}>

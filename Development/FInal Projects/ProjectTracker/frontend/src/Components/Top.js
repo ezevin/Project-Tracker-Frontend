@@ -44,7 +44,7 @@ class Top extends Component {
             <Dropdown item text='Current Projects'>
               <Dropdown.Menu>
                 {this.props.projects.map(project => (
-                  <Link key={project.id} to={`/show/${project.id}`} onClick={()=>this.dropDown(project.id)}>
+                  <Link key={project.id} to={`/show/${project.id}`} onClick={()=>this.props.dropDown(project.id)}>
                     <Dropdown.Item key={project.id}>{project.title}</Dropdown.Item>
                   </Link>
                 ))}

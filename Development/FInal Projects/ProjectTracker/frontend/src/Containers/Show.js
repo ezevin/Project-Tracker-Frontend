@@ -34,7 +34,7 @@ class Show extends Component {
     }else {
       fetch(`http://localhost:3001/api/v1/projects/${this.props.slug}`)
       .then(res => res.json())
-      .then(data => this.setState({projects: data, researches: data.researches, toDoList: data.to_do_lists, projectMaterials: data.materials, notes: data.notes, id: data.id}, console.log("All", data)))
+      .then(data => this.setState({projects: data, researches: data.researches, toDoList: data.to_do_lists, projectMaterials: data.materials, notes: data.notes, id: data.id}))
 
       fetch('http://localhost:3001/api/v1/project_materials')
       .then(res => res.json())
@@ -73,6 +73,21 @@ class Show extends Component {
          })
          .then(() =>this.fetchProjectMaterials())
        }})
+       
+    const material = this.props.materials.filter(material => {
+                        if (material.id === id){return material}
+                      })
+    const total = material.map(item => item.quantity)
+    fetch(`http://localhost:3001/api/v1/materials/${id}`, {
+      method: "PATCH",
+      headers: {
+        Accept: 'application/json',
+        'Content-type': 'application/json'
+        },
+      body: JSON.stringify({ quantity: total+1 })
+         })
+           .then(res=>res.json())
+           .then(data => {this.setState(data)})
   }
 
   handleSearch = (e, {value}) => {

@@ -20,7 +20,6 @@ class App extends Component {
     id: '',
     projectMaterials: [],
     pm: [],
-    // allProjects: [],
     users: [],
     materialsInUse: [],
     user: [],
@@ -31,8 +30,7 @@ class App extends Component {
     allToDo: [],
     allNotes:[],
     um: [],
-    currentProject: [],
-    unfinished: []
+    currentProject: []
   }
 
   componentDidMount(){
@@ -42,7 +40,7 @@ class App extends Component {
     if(token){
       fetch('http://localhost:3001/api/v1/current_user', {
         headers: {
-          Authenticate: token
+          Authorization: token
         }
       })
       .then(res => res.json())
@@ -87,6 +85,7 @@ class App extends Component {
   /******************************************/
   dropDown = (id) => {
     this.props.history.push(`/show/${id}`)
+    this.setState({projects: []})
     // fetch(`http://localhost:3001/api/v1/projects/${id}`)
     // .then(res => res.json())
     // .then(data => this.setState({projectMaterials: data.materials, pId: id, researches: data.researches, toDoList: data.to_do_lists, notes: data.notes}))
@@ -110,7 +109,26 @@ class App extends Component {
 
   handleLogout = () => {
     localStorage.removeItem("token")
-    this.setState({currentUser: null})
+    this.setState({
+      currentUser: null,
+      projects: [],
+      materials: [],
+      pID: null,
+      id: '',
+      projectMaterials: [],
+      pm: [],
+      users: [],
+      materialsInUse: [],
+      user: [],
+      research: [],
+      allResearch: [],
+      toDoList: [],
+      notes: [],
+      allToDo: [],
+      allNotes:[],
+      um: [],
+      currentProject: []
+    })
     this.props.history.push('login')
   }
 
@@ -196,6 +214,7 @@ class App extends Component {
   /******************************************/
 
   render (){
+    console.log("testing", this.state.materials);
 
     const unfinished = this.state.projects.filter(project => {
       if(project.finished === false){

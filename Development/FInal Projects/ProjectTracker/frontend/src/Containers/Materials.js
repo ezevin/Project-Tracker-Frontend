@@ -96,12 +96,13 @@ class Materials extends Component {
               label={material.label}
               price={material.price}
               description={material.description}
+              quantity={material.quantity}
               id={material.id}
               image_url={material.image_url} place_purchased={material.place_purchased} deleteMaterial={this.props.deleteMaterial}
               fetchMaterials={this.props.fetchMaterials} um={this.props.um}/>
           ))}</Container>
         </div>
-        <br /><br />
+        <br />
         <center><Popup trigger={<Button content='Add A New Material' />}
                   content={form}
                   on='click'

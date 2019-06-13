@@ -14,9 +14,6 @@ class ProjectMaterials extends Component {
     quantity: ''
   }
 
-  // componentDidMount(){
-  //   this.setState({quantity:})
-  // }
 
   handleOpen = () => {
     this.setState({isOpen: true})
@@ -27,20 +24,43 @@ class ProjectMaterials extends Component {
   }
 
   handleClick = (id) => {
-    console.log("project_id", this.props.id, "material", id);
+    // console.log("project_id", this.props.id, "material", id);
+    const { quantity } = this.state
+    const token = localStorage.getItem('token')
+    const material = this.props.allMaterials.filter(material => {
+      if (material.id === id){
+        return material
+      }
+    })
+    const total = material.map(item => item.quantity)
+
     fetch('http://localhost:3001/api/v1/project_materials', {
       method: "POST",
       headers: {
         Accept: 'application/json',
-        'Content-type': 'application/json'
+        'Content-type': 'application/json',
+        Authorization: token
       },
-      body: JSON.stringify({ project_id: this.props.id, material_id: id })
+      body: JSON.stringify({
+          project_id: this.props.id,
+          material_id: id
+      })
     })
       .then(res=>{res.json()})
       .then(data => {this.props.addProjectMaterial(data)})
       .then(()=>this.props.fetchProjectMaterials())
       .then(()=>this.props.fetchPM())
 
+      fetch(`http://localhost:3001/api/v1/materials/${id}`, {
+            method: "PATCH",
+            headers: {
+              Accept: 'application/json',
+              'Content-type': 'application/json'
+            },
+            body: JSON.stringify({ quantity: total-1 })
+          })
+          .then(res=>res.json())
+          .then(data => {this.setState(data)})
       this.setState({isOpen: false})
   }
 
@@ -50,23 +70,12 @@ class ProjectMaterials extends Component {
     .then(data => {console.log(data)})
   }
 
-  handleAddMaterial = (id) => {
-    console.log("add", id);
-    fetch(`http://localhost:3001/api/v1/project_materials/${this.props.id}`)
-    .then(res => res.json())
-    .then(data => {console.log(data)})
-  }
-
-  handleSubtractMaterial = (id) => {
-    console.log("subtract", id);
-  }
-
   render (){
 
     const id = this.props.materials.map(material => material.id)
 
     const filtered = this.props.allMaterials.filter(material => {
-     if(!id.includes(material.id)){
+     if(material.quantity !== 0){
        return material
      }
     })
@@ -83,11 +92,10 @@ class ProjectMaterials extends Component {
         <Header inverted color='grey' textAlign="center" as='h2'>Inventory</Header>
         <center><Search width={15} onSearchChange={this.props.handleSearch} showNoResults={false} /></center><br />
         <Grid>
-          <Grid.Column width={3}><span>Item:</span></Grid.Column>
-          <Grid.Column width={3}><span>Price:</span></Grid.Column>
-          <Grid.Column width={3}><span>Quantity:</span></Grid.Column>
-          <Grid.Column width={3}></Grid.Column>
-          <Grid.Column width={3}></Grid.Column>
+          <Grid.Column width={4}><span>Item:</span></Grid.Column>
+          <Grid.Column width={4}><span>Price:</span></Grid.Column>
+          <Grid.Column width={4}></Grid.Column>
+          <Grid.Column width={4}></Grid.Column>
         </Grid>
         {this.props.materials.map(material => (
           <ProjectMaterialList
