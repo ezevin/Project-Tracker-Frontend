@@ -20,18 +20,6 @@ class Main extends Component {
     const token = localStorage.getItem("token")
     if(!token){
       this.props.history.push('login')
-    }else {
-      fetch('http://localhost:3001/api/v1/researches')
-      .then(res => res.json())
-      .then(data => this.setState({allResearch: data}))
-
-      fetch('http://localhost:3001/api/v1/to_do_lists')
-      .then(res => res.json())
-      .then(data => this.setState({allToDo: data}))
-
-      fetch('http://localhost:3001/api/v1/notes')
-      .then(res => res.json())
-      .then(data => this.setState({allNotes: data}))
     }
   }
 
@@ -50,24 +38,14 @@ class Main extends Component {
       return a.title.localeCompare(b.title)})})
   }
 
+  handleDateSort = () => {
+    this.setState({projects: this.props.projects.sort((a, b) => {
+          a = new Date(a.due_date);
+          b = new Date(b.due_date);
+          return a>b ? -1 : a<b ? 1 : 0})})
+  }
+
   render(){
-
-    // console.log(this.props);
-    // const date = this.props.projects.map(project => project.updated_at.split("").splice(0, 10).join())
-    //
-    // const date1 = date.map(day => {
-    //   if(day !== NaN){
-    //     return day
-    //   }
-    // })
-
-    const day = this.props.projects.map(project => project.updated_at.split("").splice(8, 2).join())
-    const month = this.props.projects.map(project => project.updated_at.split("").splice(5, 2).join())
-    const year = this.props.projects.map(project => project.updated_at.split("").splice(0, 4).join())
-    // const date = []
-    // date.push(day, month, year)
-    // const sorted = date.map(date )
-    console.log("day", day[0], "month", month[0], "year", year[0], "date")
 
     const filteredMaterials = this.props.materials.filter(material =>{
       return material.label.toLowerCase().includes(this.state.search.toLowerCase())
@@ -88,9 +66,11 @@ class Main extends Component {
               addProject={this.props.addProject}
               handleSearch={this.handlePSearch}
               titles={this.handleTitleSort}
+              dateSort={this.handleDateSort}
               dates={this.props.dates}
               id={this.props.id}
               dropDown={this.props.dropDown}
+              toDoList={this.props.toDoList}
             />
           </Grid.Column>
           <Grid.Column floated="right" width={8}>

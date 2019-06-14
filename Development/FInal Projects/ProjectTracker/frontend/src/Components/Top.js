@@ -5,30 +5,17 @@ import { Link, withRouter } from 'react-router-dom'
 
 
 class Top extends Component {
-  state = {
-    id: "",
-    page: false
-  }
-
-  fetchProjects = () => {
-    fetch(`http://localhost:3001/api/v1/projects/${this.state.id}`)
-    .then(res => res.json())
-    .then(data => this.setState({projects: data}))
-    this.props.history.push(`/show/${this.state.id}`)
-  }
 
   render(){
-    console.log(this.state.id);
     return (
-      <div>
-       <Menu >
+       <Menu>
         <Link to="/home" >
           <Menu.Item name='home'>
               Home
           </Menu.Item>
         </Link>
 
-        <Link to={`/gallery/${this.props.id}`}>
+        <Link to={`/gallery`}>
           <Menu.Item name='gallery' >
             Gallery
           </Menu.Item>
@@ -73,7 +60,7 @@ class Top extends Component {
                 float='right'
                 name='logout'
                 onClick={this.props.handleLogout}>
-                <span>Logout</span>
+                Logout
               </Menu.Item>
               :
               <Menu.Item
@@ -86,7 +73,6 @@ class Top extends Component {
 
         </Menu.Menu>
         </Menu>
-      </div>
     )
   }
 }

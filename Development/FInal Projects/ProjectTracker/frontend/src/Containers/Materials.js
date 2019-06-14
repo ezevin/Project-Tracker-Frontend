@@ -22,13 +22,12 @@ class Materials extends Component {
   handleChange = (e) => {
     const target = e.target.name
     const value = e.target.value
-    console.log("target", target, "value", value);
     if (target === "label"){
-    this.setState({label: e.target.value})
+    this.setState({label: value})
     } else if (target === "price"){
-    this.setState({price: e.target.value})
-  } else if (target === "quantity"){
-    this.setState({quantity: e.target.value})
+    this.setState({price: value})
+    } else if (target === "quantity"){
+    this.setState({quantity: value})
     }
   }
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import { Form, Button, Modal } from 'semantic-ui-react'
 
 class Finished extends Component {
@@ -7,7 +7,7 @@ class Finished extends Component {
   state = {
     finished: false,
     isOpen: false,
-    finished_image: ""
+    finished_image: "https://image.shutterstock.com/image-vector/empty-background-style-png-blank-450w-676832590.jpg"
   }
 
   handleOpen = () => {
@@ -37,6 +37,8 @@ class Finished extends Component {
         })
         .then(res=>res.json())
         .then(data => {this.setState(data)})
+        .then(this.props.history.push('/gallery'))
+        .then(()=> this.props.fetchProjects())
   }
 
   handleSubmit = (e) => {
@@ -54,7 +56,7 @@ class Finished extends Component {
         .then(res=>res.json())
         .then(data => {this.setState(data)})
         .then(()=> this.props.fetchProjects())
-        .then(this.props.history.push('/home'))
+        this.props.history.push('/gallery')
   }
 
   render(){
@@ -65,7 +67,7 @@ class Finished extends Component {
         <center><Modal.Header>CONGRATULATIONS!</Modal.Header></center>
         <Modal.Header inverted as="h6"><center>CONGRATULATIONS! <br /> Would you like to add a final image? </center></Modal.Header>
           <Modal.Actions>
-            <Link to="home"><Button negative>No</Button></Link>
+            <Button negative onClick={this.handleClick}>No</Button>
             <Modal size='small' trigger={<Button positive icon='checkmark' labelPosition='right' content='Yes' />}>
               <Modal.Header>Add Picture</Modal.Header>
                 <Modal.Content>

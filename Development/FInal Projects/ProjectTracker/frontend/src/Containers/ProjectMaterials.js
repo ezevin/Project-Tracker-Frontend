@@ -24,8 +24,6 @@ class ProjectMaterials extends Component {
   }
 
   handleClick = (id) => {
-    // console.log("project_id", this.props.id, "material", id);
-    const { quantity } = this.state
     const token = localStorage.getItem('token')
     const material = this.props.allMaterials.filter(material => {
       if (material.id === id){
@@ -57,33 +55,27 @@ class ProjectMaterials extends Component {
               Accept: 'application/json',
               'Content-type': 'application/json'
             },
-            body: JSON.stringify({ quantity: total-1 })
+            body: JSON.stringify({ quantity: (parseInt(total) - 1 ).toString() })
           })
           .then(res=>res.json())
           .then(data => {this.setState(data)})
       this.setState({isOpen: false})
-  }
-
-  handleQuantity = () => {
-    fetch(`http://localhost:3001/api/v1/projects`)
-    .then(res => res.json())
-    .then(data => {console.log(data)})
+      window.location.reload()
   }
 
   render (){
 
-    const id = this.props.materials.map(material => material.id)
-
     const filtered = this.props.allMaterials.filter(material => {
-     if(material.quantity !== 0){
+     if(material.quantity > 0){
        return material
      }
     })
 
     const form = filtered.map(material => {
+
       return  (
                 <List>
-                  <Button key={material.id} onClick={()=>this.handleClick(material.id)}>{material.label} ${material.price} ({material.quantity})</Button>
+                  <Button onClick={()=>this.handleClick(material.id)}>{material.label} ${material.price}</Button><span floated="right">{material.quantity} Left</span>
                 </List>)
               })
 

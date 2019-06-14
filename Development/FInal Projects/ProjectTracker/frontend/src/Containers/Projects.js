@@ -51,7 +51,7 @@ class Projects extends Component {
 
   render(){
     const { value } = this.state.value
-    // console.log(this.props.dates);
+
     const form = <Form onSubmit={this.handleSubmit}>
                   <Form.Field>
                     <label>Project Name:</label>
@@ -64,8 +64,16 @@ class Projects extends Component {
       <div className="shadow">
         <Header inverted color='grey' textAlign="center" as='h2'>Current Projects</Header>
           <center><Search width={15} onSearchChange={this.props.handleSearch} showNoResults={false} /></center><br />
+          <Grid >
+            <Grid.Column width={8}>
           <center><span>Sort By Project Name:</span>
                 <input  type="radio" value="Name" checked={value === 'Name'} onChange={this.props.titles}/></center><br />
+            </Grid.Column>
+            <Grid.Column width={6}>
+                <center><span>Sort By Date:</span>
+                      <input  type="radio" value="Name" checked={value === 'Name'} onChange={this.props.dateSort}/></center><br />
+            </Grid.Column>
+          </Grid>
             <center><Container align="center">
               <Grid>
                 <Grid.Column width={6}>
